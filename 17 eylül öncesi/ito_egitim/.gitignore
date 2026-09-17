@@ -1,0 +1,12 @@
+.env
+.env.local
+.key
+secret_keys.json
+google_services.json
+
+#bağımlılık çöpleri 
+node_modules/
+bower_components/
+/builds/
+/.dart_tool/
+/dist/
