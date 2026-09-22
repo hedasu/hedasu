@@ -1,0 +1,108 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Spotify Premium ve Etkinlik Tanıtımı</title>
+        <style>
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                background: #261002 ;
+                padding: 10px;
+                max-width: 800px;
+                margin: auto;
+            }
+            .card{
+                background-color: #e8e1dc;
+                padding: 20px;
+                border-radius: 12px;
+                margin: 52px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            }
+            iframe{
+                width: 100%;
+                border-radius: 8px;
+                border: none;
+            }
+            label{
+                display: block;
+                font-weight: bold;
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            .hint{
+                font-size: 12px;
+                color: #64748b;
+            }
+            .box {
+                background: #e8e1dc;
+                padding: 20px;
+                border-radius: 12px;
+                margin: 16px;
+                border: 1px solid #e8e1dc;
+            }
+            button{
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <h3>SPOTİFY'IN İLK KEZ DÜZENLEDİĞİ SÜRPRİZLER VE EĞLENCELERLE DOLU FUAR 2 EKİM'DE SİZLERLE !!!</h3>
+            <details>
+                <summary>Spotify premium nedir?</summary>
+                <p>Spotify premium,müzik ve podcast dinleme platformu olan Spotify 'ın çevrımdışı ve reklamsız kullanılan ücretli versiyonudur.</p>
+            </details>
+            <details>
+                <summary>Spotify premium üyeliğim olmadan etkinliğe katılabilir miyim?</summary>
+                <p>Elbette.Spotify hesabınızla etkinliğe başvuru sağlıyorsunuz ancak premium üyelik şart değil.</p>
+            </details>
+            <details>
+                <summary>Üyeliğimi nasıl yönetebilirim?</summary>
+                <p>Ana sayfanın sol üstündeki üç noktadan Yardım -> Hesabın  kısmına tıklayın. Açılan sayfadan premium üye olabilir,üyeliğinizi iptal edebilir, hesabınızı silebilirsiniz.Kısacası üyelik ve hesabınızla alakalı tüm işlemler o sayfada mevcuttur. </p>
+            </details>
+            <details>
+                <summary>Etkinlikte beni neler bekliyor</summary>
+                <p>Spotify'ın ilk kez düzenlenen bu etkinliğinde birbirinden güzel etkinlikler,çekilişler,dj performansları ve sürpriz sanatçı konserleri sizinle olacaktır. </p>
+            </details>
+        </div>
+
+        <div class="card">
+            <h3>Etkinlik Kontenjan Bilgisi</h3>
+            <label for="p1">Kontenjan doluluk oranı</label>
+            <progress id="p1" value="75" max="100">75%</progress>
+            <div class="hint">Kayıtlı kontenjan :75% </div>
+        </div>
+        <div class="box">
+        <h3>Kampanya Bildirimi</h3>
+        <p style="font-size: 13px;color: #64748b;">Aşağıdaki butona basarak modalı açabilirsiniz</p>
+        <button class="btn-modal" onclick="document.getElementById('kayitFormu').showModal()">Başvuru Yap</button>
+         </div>
+
+        <dialog id="kayitFormu">
+            <h3 style="margin-top: 0;">Başvuru Kayıt Formu</h3>
+            <p style="font-size: 13px;color: #475569;">Başvuru sayfasına yönlendiriliyorsunuz... </p>
+            <div style="margin-top: 16px;text-align: right;">
+                <div>
+                    <button onclick="document.getElementById('kayitFormu').close()" style="padding: 6px 12px;border-radius: 4px;cursor: pointer;">
+                        Kapat
+                    </button>
+                </div>
+            </div>
+        </dialog>
+
+        
+        <div class="card">
+            <h3>Premium Tanıtım Videosu ve Etkinlik Alanı Konumu</h3>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/aQwE53yMZ88?si=cLgyQ2ALDiuZsxk4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <br>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6019.899467872211!2d28.983815999999997!3d41.026355650000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab9d81ea6df6f%3A0x915b49a4a47881e7!2sGalataport%20%C4%B0stanbul!5e0!3m2!1str!2str!4v1790038916902!5m2!1str!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe> 
+        </div>
+       
+    </body>
+    </html>
