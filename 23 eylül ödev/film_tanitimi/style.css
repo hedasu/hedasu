@@ -1,0 +1,585 @@
+/* =========================================
+   1) CSS RESET + CSS DEĞİŞKENLERİ
+========================================= */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #05070d;
+    --surface: #11141d;
+    --surface-hover: #171a24;
+    --border: #252936;
+    --border-focus: #444958;
+    --text: #ffffff;
+    --text-muted: #a8abb6;
+    --accent: #e62429;
+    --glass: rgba(17, 20, 29, 0.65);
+    --skeleton: #20232d;
+    --shadow: 0 18px 35px rgba(0, 0, 0, 0.45);
+    --radius: 18px;
+    --space-sm: 10px;
+    --space-md: 18px;
+    --space-lg: 25px;
+    --space-xl: 40px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top right, rgba(230, 36, 41, 0.15), transparent 30%),
+        var(--bg);
+    color: var(--text);
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    padding: 28px 18px;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* =========================================
+   2) HEADER + AKIŞKAN BAŞLIK (clamp)
+========================================= */
+.header-area {
+    max-width: 900px;
+    margin: 40px auto 50px;
+    text-align: center;
+}
+
+h1 {
+    font-size: clamp(2.3rem, 9vw, 5rem);
+    line-height: 0.95;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+h1 span {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--text);
+}
+
+.header-description {
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* =========================================
+   3) CSS ANIMATION - SÜREKLİ DURUM NOKTASI
+========================================= */
+.header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 7px 14px;
+    border: 1px solid rgba(230, 36, 41, 0.3);
+    border-radius: 9999px;
+    background: rgba(230, 36, 41, 0.08);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulseAnim 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseAnim {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.35;
+        transform: scale(1.5);
+    }
+}
+
+/* =========================================
+   4) GLASSMORPHISM
+========================================= */
+.glass-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: var(--shadow);
+}
+
+/* =========================================
+   5) MOBILE-FIRST: varsayılan = 1 sütun
+========================================= */
+.intro-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+.hero-card {
+    padding: var(--space-lg);
+}
+
+.small-title {
+    margin-bottom: 8px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.hero-card h2 {
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+}
+
+.hero-text {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+}
+
+.button {
+    display: block;
+    padding: 12px 20px;
+    border-radius: 9999px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.primary-button {
+    background: var(--accent);
+    color: var(--text);
+}
+
+.secondary-button {
+    border: 1px solid var(--border-focus);
+    color: var(--text);
+}
+
+.button:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+}
+
+.poster-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.poster-card {
+    width: 100%;
+    max-width: 240px;
+    overflow: hidden;
+}
+
+.movie-poster {
+    display: block;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.poster-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.poster-info h3 {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.poster-info p {
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.section {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-top: 70px;
+}
+
+.section-title {
+    margin-bottom: var(--space-lg);
+}
+
+.section-title p {
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.section-title h2 {
+    margin-top: 5px;
+    font-size: 1.7rem;
+}
+
+.story-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: var(--space-lg);
+}
+
+.story-number {
+    color: var(--accent);
+    font-size: 3rem;
+    font-weight: 800;
+    opacity: 0.5;
+}
+
+.story-card h3 {
+    margin-bottom: 8px;
+}
+
+.story-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* Kartlar mobilde 1 sütun */
+.movie-grid,
+.cast-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+}
+
+/* =========================================
+   6) HOVER + TRANSITION
+========================================= */
+.info-card,
+.cast-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.info-card {
+    min-height: 190px;
+    padding: 22px;
+}
+
+.info-card:hover,
+.cast-card:hover {
+    transform: translateY(-6px);
+    background: var(--surface-hover);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.5);
+}
+
+.info-card:hover {
+    border-color: var(--accent);
+}
+
+.cast-card:hover {
+    border-color: var(--border-focus);
+}
+
+.card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.card-label {
+    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.card-icon {
+    display: flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 18px;
+}
+
+.info-card h3 {
+    margin-bottom: 7px;
+    font-size: 1.15rem;
+}
+
+.info-card p {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.cast-card {
+    overflow: hidden;
+    padding: 15px;
+}
+
+.cast-image {
+    display: block;
+    width: 100%;
+    height: 330px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.cast-number {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.cast-card h3 {
+    margin-bottom: 4px;
+    font-size: 1rem;
+}
+
+.cast-card p {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.more-area {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-lg);
+}
+
+.more-cast {
+    width: fit-content;
+    padding: 10px 20px;
+    border: 1px solid var(--border-focus);
+    border-radius: 9999px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+}
+
+.more-cast:hover {
+    border-color: var(--accent);
+    background: rgba(230, 36, 41, 0.08);
+    color: var(--text);
+}
+
+/* =========================================
+   7) SKELETON LOADING + @keyframes
+========================================= */
+.skeleton-card {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+}
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--skeleton);
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.08),
+        transparent
+    );
+    animation: skeletonLoading 1.5s linear infinite;
+}
+
+@keyframes skeletonLoading {
+    100% {
+        left: 100%;
+    }
+}
+
+.skeleton-image {
+    height: 190px;
+}
+
+.skeleton-content {
+    padding: 22px;
+}
+
+.skeleton-title {
+    width: 60%;
+    height: 24px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+}
+
+.skeleton-text {
+    width: 100%;
+    height: 13px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.skeleton-text.short {
+    width: 65%;
+}
+
+footer {
+    max-width: 1080px;
+    margin: 70px auto 0;
+    padding: 30px 10px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+footer p {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+footer span {
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+/* =========================================
+   8) TABLET: 768px ve üzeri = 2 sütun
+========================================= */
+@media (min-width: 768px) {
+    body {
+        padding: 32px 30px;
+    }
+
+    .header-area {
+        margin-bottom: 60px;
+    }
+
+    .intro-grid {
+        grid-template-columns: minmax(0, 1fr) 230px;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .hero-card {
+        padding: 35px;
+    }
+
+    .hero-buttons {
+        flex-direction: row;
+    }
+
+    .button {
+        width: fit-content;
+        min-width: 140px;
+    }
+
+    .story-card {
+        grid-template-columns: 100px 1fr;
+        align-items: center;
+    }
+
+    .movie-grid,
+    .cast-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cast-image {
+        height: 300px;
+    }
+
+    .skeleton-card {
+        display: grid;
+        grid-template-columns: 40% 60%;
+    }
+
+    .skeleton-image {
+        height: 230px;
+    }
+}
+
+/* =========================================
+   9) MASAÜSTÜ: 1024px ve üzeri = 4 sütun
+========================================= */
+@media (min-width: 1024px) {
+    body {
+        padding: var(--space-xl);
+    }
+
+    .intro-grid {
+        grid-template-columns: minmax(0, 700px) 240px;
+        justify-content: center;
+        gap: 45px;
+    }
+
+    .movie-grid,
+    .cast-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .cast-image {
+        height: 260px;
+    }
+
+    .section-title h2 {
+        font-size: 2rem;
+    }
+}
+
+/* Hareket azaltma tercihi olan kullanıcılar için erişilebilirlik desteği */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+    }
+}
