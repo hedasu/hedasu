@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>E-Ticaret Ürün Detay & Sepet</title>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            color: #222;
+            padding-bottom: 100px;
+        }
+
+        
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: auto;
+            background-color: white;
+            min-height: 100vh;
+        }
+
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 18px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu-button{
+            border: none;
+            background: #ccc;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 0;
+        }
+
+        .menu-button:hover{
+            background-color: #dfadaa;
+        }
+
+        .cart-button {
+            border: none;
+            background: none;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .cart-button:hover {
+            background-color: #451426;
+            transform: scale(1.1);
+        }
+        
+         .logo {
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 1px; /* bir yazı içindeki harflerin arasındaki fark (gap ayrı olan elemanlar arası mesafe letter space bir kelime gibi aynı eleman içinde)*/
+        }
+
+        
+        .product-image-area {
+            position: relative;
+            width: 100%;
+            background-color: #f7eeee;
+            padding: 35px 20px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 350px;
+            border: none;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #b01835;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .shipping-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #222;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 22px;
+        }
+
+        .brand {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 24px;
+            margin: 0 0 10px 0;
+        }
+
+        .rating {
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .rating:hover{
+            transform: scale(1,1.1);
+        }
+
+        .description {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 25px 0;
+        }
+
+        .option-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .size-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .size-chip {
+            border: 1px solid #ccc;
+            background-color: white;
+
+            padding: 10px 15px;
+
+            border-radius: 20px;
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+        .size-chip.active {
+            background-color: #451426;
+            color: white;
+            border-color: #451426;
+        }
+
+        .size-chip:hover {
+            border-color: #451426;
+        }
+        
+
+
+        .product-details-box {
+            margin-top: 25px;
+            border-top: 1px solid #eee;
+        }
+
+        .product-details-box details {
+            border-bottom: 1px solid #eee;
+        }
+
+
+        .product-details-box summary {
+            position: relative;
+            list-style: none;
+            padding: 18px 40px 18px 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        .product-details-box summary::-webkit-details-marker {
+            display: none;
+        }
+
+
+        .product-details-box summary::after {
+            content: "+";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 22px;
+            color: #451426;
+        }
+
+        .product-details-box details[open] summary::after {
+            content: "−";
+        }
+
+        .detail-content {
+            padding: 0 5px 16px 5px;
+        }
+
+        .detail-content p {
+            margin: 8px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .feature-icon {
+            font-size: 20px;
+        }
+    
+        .bottom-cart-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+
+            width: 100%;
+            max-width: 480px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 15px 18px;
+
+            background-color: white;
+
+            border-top: 1px solid #ddd;
+
+            box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.08);
+
+            z-index: 1000;
+        }
+
+        .price-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .old-price {
+            font-size: 13px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .price {
+            font-size: 21px;
+            font-weight: bold;
+            color: #451426;
+        }
+
+        .add-cart-button {
+            border: none;
+            background-color: #451426;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-cart-button:hover {
+            background-color: #2f0c19;
+        }
+
+        
+        @media (max-width: 480px) {
+
+            .product-title {
+                font-size: 21px;
+            }
+
+            .product-image {
+                height: 350px;
+            }
+
+            .add-cart-button {
+                padding: 13px 19px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    
+    <header class="mobile-header">
+
+        <button class="menu-button">
+            ☰
+        </button>
+
+        <div class="logo">
+            CLINIQUE
+        </div>
+
+        <button class="cart-button">
+            🛒
+        </button>
+
+    </header>
+
+
+    <section class="product-image-area">
+
+    <span class="discount-badge">
+        %20 İNDİRİM
+    </span>
+
+    <span class="shipping-badge">
+        KARGO BEDAVA
+    </span>
+
+    <iframe
+        class="product-image"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9FC6RAs9jttUKNORPPVSi9sQjxffWCewDE896DP70PA&s=10"
+        title="Clinique Black Honey Lip Oil" >
+    </iframe>
+
+</section>
+
+
+    
+    <main class="product-info">
+
+        <div class="brand">
+            CLINIQUE
+        </div>
+
+        <h1 class="product-title">
+            Black Honey Lip Oil
+        </h1>
+
+        <div class="rating">
+            ⭐⭐⭐⭐⭐ 4.8 (126 Değerlendirme)
+        </div>
+
+        <p class="description">
+            Dudaklara parlak, canlı ve doğal görünümlü bir renk
+            kazandıran Black Honey Lip Oil ile makyajını tamamla.
+            Hafif yapısı sayesinde dudaklarda konforlu ve parlak
+            bir görünüm oluşturur.
+        </p>
+
+
+        <hr class="divider">
+
+
+        <div class="option-title">
+            Ton Seçimi
+        </div>
+
+        <div class="size-list">
+
+            <button class="size-chip active">
+                Black Honey
+            </button>
+
+            <button class="size-chip">
+                Pink Honey
+            </button>
+
+            <button class="size-chip">
+                Nude Honey
+            </button>
+
+        </div>
+
+        <div class="product-details-box">
+
+        <details open>
+            <summary>Ürün Özellikleri</summary>
+
+            <div class="detail-content">
+
+                <div class="feature">
+                    <span class="feature-icon">✨</span>
+                    <span>Parlak ve doğal görünüm</span>
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">💧</span>
+                    <span>Hafif ve konforlu yapı</span>
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">💄</span>
+                    <span>Günlük kullanıma uygun</span>
+                </div>
+
+            </div>
+        </details>
+
+
+    
+        <details>
+            <summary>Ürün İçeriği</summary>
+
+            <div class="detail-content">
+
+                <p>
+                    INGREDIENTS : HYDROGENATED POLYISOBUTENE, TRIISOSTEARYL CITRATE, PENTAERYTHRITYL TETRAETHYLHEXANOATE, POLYGLYCERYL-2 TRIISOSTEARATE, HYDROGENATED POLYDECENE, RICINUS COMMUNIS (CASTOR) SEED OIL, DIPENTAERYTHRI[1]TYL TRI-POLYHYDROXYSTEARATE, CARTHAMUS TINCTORIUS (SAFFLOWER) SEED OIL, OLEA EUROPAEA (OLIVE) FRUIT OIL,SIMMONDSIA CHINENSIS (JOJOBA) SEED OIL, SILICA, TOCOPHERYL ACETATE, CURCUMA LONGA (TURMERIC) ROOT EXTRACT, GLYCINE SOJA (SOYBEAN) SEED EXTRACT, CERAMIDE 2, SQUALANE, LACTOBACILLUS FERMENT, HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL, LAURYL PCA, CAPRYLYL GLYCOL, DIMETHICONE, POLYSILICONE-11, WATERAQUAEAU,TETRAHEXYL[1]DECYL ASCORBATE, PENTAERYTHRITYL TETRA-DI-T-BUTYL HYDROXYHYDROCINNAMATE, [+/- MICA, IRON OXIDES (CI 77491), IRON OXIDES (CI 77492), IRON OXIDES (CI 77499), RED 28 LAKE (CI 45410), RED 33 LAKE (CI 17200), RED 27 (CI 45410), TITANIUM DIOXIDE (CI 77891), MANGANESE VIOLET (CI 77742), YELLOW 5 LAKE (CI 19140), RED 22 LAKE (CI 45380), RED 30 LAKE (CI 73360), CARMINE (CI 75470), BISMUTH OXYCHLORIDE (CI 77163), RED 6 (CI 15850), RED 7 LAKE (CI 15850), RED 21 (CI 45380), ORANGE 5 (CI 45370), BLUE 1 LAKE (CI 42090), YELLOW 6 LAKE (CI 15985)] [ILN42280]
+
+                </p>
+
+                <p>
+                    <strong>Renk:</strong> Black Honey
+                </p>
+
+                <p>
+                    <strong>Görünüm:</strong> Parlak
+                </p>
+
+        </div>
+    </details>
+
+
+   
+     <details>
+            <summary>Nasıl Kullanılır?</summary>
+
+            <div class="detail-content">
+
+            <p>
+                Aplikatör yardımıyla doğrudan dudaklarınıza uygulayın.
+                Tek başına veya başka bir dudak ürünüyle birlikte
+                kullanabilirsiniz.
+            </p>
+
+            </div>
+        </details>
+
+
+
+        <details>
+            <summary>Teslimat & İade</summary>
+
+            <div class="detail-content">
+
+                <div class="feature">
+                    <span class="feature-icon">🚚</span>
+                    <span>Ücretsiz kargo</span>
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">📦</span>
+                    <span>
+                        Hijyen koşulları nedeniyle ambalajı açılmış
+                        ürünlerde iade kabul edilmemektedir.
+                    </span>
+                </div>
+
+            </div>
+        </details>
+
+    </div>
+
+       
+    </main>
+
+</div>
+
+
+<div class="bottom-cart-bar">
+
+    <div class="price-area">
+
+        <span class="old-price">
+            1.799 TL
+        </span>
+
+        <span class="price">
+            1.439 TL
+        </span>
+
+    </div>
+
+
+    <button class="add-cart-button">
+        Sepete Ekle
+    </button>
+
+</div>
+
+</body>
+</html>
