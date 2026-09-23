@@ -289,7 +289,6 @@
         }
 
         
-        @media (max-width: 480px) {
 
             .product-title {
                 font-size: 21px;
@@ -303,4 +302,4 @@
                 padding: 13px 19px;
             }
 
-        }
+          
