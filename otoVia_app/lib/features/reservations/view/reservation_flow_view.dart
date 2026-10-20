@@ -6,9 +6,19 @@ import '../../coupons/controller/coupon_controller.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../../../core/extensions/context_extensions.dart';
 
+/// otoVia Çok Adımlı Rezervasyon Akışı (ReservationFlowView)
+///
+/// 6 aşamalı dinamik rezervasyon sihirbazı:
+/// 1. Kiralama Türü ve Süresi (Günlük / Saatlik, Süre artırma/azaltma)
+/// 2. Teslim Alma ve Bırakma Lokasyonları
+/// 3. Ehliyet Uygunluğu Kontrolü
+/// 4. Kiralama Sözleşmesi ve Şartların Onayı
+/// 5. Şeffaf Fiyatlandırma ve Kupon Uygulama
+/// 6. Ödeme Onayı ve Rezervasyonu Kesinleştirme
 class ReservationFlowView extends StatefulWidget {
   const ReservationFlowView({super.key, required this.vehicle});
 
+  /// Kiralanmak istenen araç
   final VehicleModel vehicle;
 
   @override
@@ -16,7 +26,10 @@ class ReservationFlowView extends StatefulWidget {
 }
 
 class _ReservationFlowViewState extends State<ReservationFlowView> {
+  // Mevcut adım indeksi (0'dan 5'e)
   int _currentStep = 0;
+
+  // Adımların Türkçe başlıkları
   static const List<String> _stepTitles = [
     'Kiralama Türü',
     'Tarih ve Konum',
@@ -26,8 +39,9 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     'Ödeme ve Onay',
   ];
 
+  // Rezervasyon Form Durumları
   late String _rentalType;
-  int _durationUnits = 1; // Gün ya da saat
+  int _durationUnits = 1; // Kaç gün ya da kaç saat
   String _pickupLocation = 'İstanbul Havalimanı (IST) VIP Lounge';
   String _dropoffLocation = 'İstanbul Havalimanı (IST) VIP Lounge';
   bool _contractAccepted = false;
@@ -38,6 +52,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
   @override
   void initState() {
     super.initState();
+    // Aracın desteklediği türe göre başlangıç değeri belirle
     _rentalType = widget.vehicle.supportsDaily ? 'daily' : 'hourly';
   }
 
@@ -47,6 +62,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     super.dispose();
   }
 
+  // Fiyat Hesaplama Formülleri
   double get _unitPrice => _rentalType == 'hourly' ? widget.vehicle.hourlyPrice : widget.vehicle.dailyPrice;
   double get _basePrice => _unitPrice * _durationUnits;
   double get _extraInsurance => _rentalType == 'hourly' ? 120 : 500;
@@ -59,23 +75,27 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
       appBar: AppBar(title: Text(widget.vehicle.fullName)),
       body: Column(
         children: [
+          // Üstteki adım göstergesi (Progress Bar)
           ReservationStepIndicator(
             currentStep: _currentStep,
             totalSteps: _stepTitles.length,
             stepTitles: _stepTitles,
           ),
+          // Mevcut adımın dinamik içerik alanı
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: _buildCurrentStepContent(context),
             ),
           ),
+          // Altta yer alan İleri / Geri navigasyon çubuğu
           _buildNavigationFooter(context),
         ],
       ),
     );
   }
 
+  /// Aktif adıma göre ilgili form bileşenini seçen switch-case yapısı
   Widget _buildCurrentStepContent(BuildContext context) {
     switch (_currentStep) {
       case 0:
@@ -95,6 +115,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     }
   }
 
+  /// 1. Adım: Kiralama Süresi ve Türü (Saatlik / Günlük)
   Widget _buildStepRentalType(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,6 +160,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     );
   }
 
+  /// 2. Adım: Teslim Alma & Bırakma Noktaları
   Widget _buildStepDateAndLocation(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,6 +194,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     );
   }
 
+  /// 3. Adım: Ehliyet ve Uygunluk Kontrolü
   Widget _buildStepLicenseCheck(BuildContext context) {
     final userLicense = authController.currentUser?.driverLicenseClass ?? 'B';
     final isEligible = widget.vehicle.isEligibleForLicense(userLicense);
@@ -191,6 +214,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     );
   }
 
+  /// 4. Adım: Kiralama Sözleşmesi ve Taahhütler
   Widget _buildStepContract(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,6 +251,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     );
   }
 
+  /// 5. Adım: Şeffaf Fiyatlandırma ve Kupon Uygulama
   Widget _buildStepPriceAndCoupon(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,6 +285,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     );
   }
 
+  /// 6. Adım: Ödeme Onayı ve Kart Bilgileri (Simülasyon)
   Widget _buildStepPayment(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,6 +320,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     );
   }
 
+  /// Fiyat satırı inşa eden yardımcı metot
   Widget _buildPriceRow(String label, String value, {bool isBold = false, bool isDiscount = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -314,6 +341,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     );
   }
 
+  /// Alt navigasyon çubuğu (Geri ve Devam Et / Ödemeyi Tamamla butonları)
   Widget _buildNavigationFooter(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -343,6 +371,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     );
   }
 
+  /// Kullanıcının mevcut adımdan bir sonrakine geçmeye yetkili olup olmadığını kontrol eder
   bool _canProceed() {
     if (_currentStep == 2) {
       final userLicense = authController.currentUser?.driverLicenseClass ?? 'B';
@@ -354,6 +383,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     return true;
   }
 
+  /// Sonraki adıma ilerletir veya son adımda rezervasyonu kesinleştirir
   void _onNextStep() {
     if (_currentStep < _stepTitles.length - 1) {
       setState(() => _currentStep++);
@@ -362,6 +392,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     }
   }
 
+  /// Girilen kupon kodunu kontrol eder ve indirimi hesaplar
   void _applyCoupon() {
     final code = _couponController.text.trim();
     final coupon = couponController.getCouponByCode(code);
@@ -376,6 +407,7 @@ class _ReservationFlowViewState extends State<ReservationFlowView> {
     }
   }
 
+  /// Rezervasyon işlemini controller üzerinden tamamlar ve başarı onay modalı açar
   Future<void> _finishReservation() async {
     final now = DateTime.now();
     final endDate = _rentalType == 'hourly'

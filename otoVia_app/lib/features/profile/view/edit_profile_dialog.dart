@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../../../core/extensions/context_extensions.dart';
 
+/// Profil Bilgilerini Düzenleme Modal Penceresi (EditProfileDialog)
+///
+/// Kullanıcının ad, soyad, telefon numarası ve ehliyet sınıfı (A, B, C, D1)
+/// bilgilerini güncellemesini sağlayan etkileşimli bir [AlertDialog] penceresidir.
 class EditProfileDialog extends StatefulWidget {
   const EditProfileDialog({super.key});
 
@@ -18,6 +22,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   @override
   void initState() {
     super.initState();
+    // Mevcut kullanıcı verileriyle kontrolcüleri doldur
     final user = authController.currentUser;
     _nameCtrl = TextEditingController(text: user?.name ?? '');
     _surnameCtrl = TextEditingController(text: user?.surname ?? '');
@@ -41,12 +46,16 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Ad giriş alanı
             TextField(controller: _nameCtrl, decoration: const InputDecoration(labelText: 'Ad')),
             const SizedBox(height: 10),
+            // Soyad giriş alanı
             TextField(controller: _surnameCtrl, decoration: const InputDecoration(labelText: 'Soyad')),
             const SizedBox(height: 10),
+            // Telefon numarası giriş alanı
             TextField(controller: _phoneCtrl, decoration: const InputDecoration(labelText: 'Telefon')),
             const SizedBox(height: 10),
+            // Ehliyet sınıfı seçici açılır kutusu (Dropdown)
             DropdownButtonFormField<String>(
               initialValue: _licenseClass,
               decoration: const InputDecoration(labelText: 'Ehliyet Sınıfı'),
@@ -68,6 +77,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
     );
   }
 
+  /// Güncellenen bilgileri AuthController'a kaydeden fonksiyon
   Future<void> _save() async {
     await authController.updateProfile(
       name: _nameCtrl.text.trim(),

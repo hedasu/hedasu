@@ -3,6 +3,10 @@ import '../../../core/widgets/brand_logo.dart';
 import 'login_view.dart';
 import 'register_view.dart';
 
+/// otoVia Karşılama (Onboarding / Welcome) Ekranı
+///
+/// Kullanıcı uygulamayı ilk açtığında veya çıkış yaptığında markayı tanıtan
+/// minimalist bir başlık, açıklama ve "Üye Girişi" / "Üye Ol" seçenekleri sunar.
 class WelcomeView extends StatelessWidget {
   const WelcomeView({super.key});
 
@@ -17,12 +21,14 @@ class WelcomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(),
+              // Marka logosu ve başlığı
               const BrandLogo(size: 56, fontSize: 32),
               const SizedBox(height: 20),
               _buildHeadline(theme),
               const SizedBox(height: 12),
               _buildSubhead(theme),
               const Spacer(),
+              // Aksiyon butonları (Giriş Yap ve Kayıt Ol)
               _buildActionButtons(context),
             ],
           ),
@@ -31,6 +37,7 @@ class WelcomeView extends StatelessWidget {
     );
   }
 
+  /// Karşılama ekranı ana başlığı
   Widget _buildHeadline(ThemeData theme) {
     return Text(
       'Ayrıcalıklı Sürüş\nDeneyimi.',
@@ -44,6 +51,7 @@ class WelcomeView extends StatelessWidget {
     );
   }
 
+  /// Karşılama ekranı alt açıklama metni
   Widget _buildSubhead(ThemeData theme) {
     return Text(
       'Motosikletten lüks SUV ve ticari araçlara kadar dilediğiniz aracı saatlik veya günlük rezerve edin.',
@@ -55,23 +63,30 @@ class WelcomeView extends StatelessWidget {
     );
   }
 
+  /// Üye Girişi ve Üye Ol yönlendirme butonları
   Widget _buildActionButtons(BuildContext context) {
     return Column(
       children: [
-        FilledButton(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const LoginView()),
+        SizedBox(
+          width: double.infinity,
+          child: FilledButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const LoginView()),
+            ),
+            child: const Text('Üye Girişi'),
           ),
-          child: const Text('Üye Girişi'),
         ),
         const SizedBox(height: 12),
-        OutlinedButton(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const RegisterView()),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const RegisterView()),
+            ),
+            child: const Text('Üye Ol'),
           ),
-          child: const Text('Üye Ol'),
         ),
       ],
     );

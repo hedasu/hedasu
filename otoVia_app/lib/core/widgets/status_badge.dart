@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Durum ve Kategori Rozeti (Status Badge / Tag) Bileşeni
+///
+/// Rezervasyon durumları (Aktif, Tamamlandı, İptal), araç kategorileri
+/// ve ehliyet sınıfı gereksinimleri gibi küçük bilgi etiketlerini zarifçe gösterir.
 class StatusBadge extends StatelessWidget {
   const StatusBadge({
     super.key,
@@ -9,9 +13,16 @@ class StatusBadge extends StatelessWidget {
     this.icon,
   });
 
+  /// Rozet üzerinde görüntülenecek metin
   final String text;
+
+  /// Rozet arka plan rengi
   final Color backgroundColor;
+
+  /// Metin ve opsiyonel ikon rengi
   final Color textColor;
+
+  /// Metnin solunda yer alacak opsiyonel mini ikon
   final IconData? icon;
 
   @override

@@ -3,6 +3,10 @@ import '../controller/notification_controller.dart';
 import '../models/notification_model.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 
+/// otoVia Bildirimler Ekranı (NotificationsView)
+///
+/// Kullanıcıya gelen rezervasyon, hatırlatma, kupon ve destek bildirimlerini listeler.
+/// Bildirime tıklandığında okundu olarak işaretler ve tümünü okundu yapma seçeneği sunar.
 class NotificationsView extends StatelessWidget {
   const NotificationsView({super.key});
 
@@ -26,6 +30,7 @@ class NotificationsView extends StatelessWidget {
     );
   }
 
+  /// AppBar ve 'Tümünü Okundu İşaretle' aksiyonu
   PreferredSizeWidget _buildAppBar(BuildContext context, List<dynamic> list) {
     return AppBar(
       title: const Text('Bildirimler'),
@@ -40,6 +45,7 @@ class NotificationsView extends StatelessWidget {
     );
   }
 
+  /// Bildirimler dikey kaydırılabilir listesi
   Widget _buildList(BuildContext context, List<dynamic> notifications) {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
@@ -54,6 +60,7 @@ class NotificationsView extends StatelessWidget {
     );
   }
 
+  /// Tek bir bildirim kartı (okunmamış ise vurgulu arka plan ve kalın yazı)
   Widget _buildNotificationTile(BuildContext context, NotificationModel n) {
     final theme = Theme.of(context);
     return Card(
@@ -76,6 +83,7 @@ class NotificationsView extends StatelessWidget {
     );
   }
 
+  /// Bildirim tipine göre renkli ve anlamlı ikon seçici
   Widget _buildIcon(NotificationType type) {
     IconData icon;
     Color color = const Color(0xFFC0B09A);

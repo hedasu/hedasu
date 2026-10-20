@@ -7,39 +7,53 @@ import '../../vehicles/controller/vehicle_controller.dart';
 import '../../vehicles/widgets/vehicle_card.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 
+/// otoVia Ana Sayfa Ekranı (HomeView)
+///
+/// Kullanıcıyı karşılayan ana vitrin ekranıdır. Aktif kiralama durumu kartı,
+/// arama çubuğu, kategori ve kullanım amacı çipleri ile filtrelenmiş araç listesini (SliverList) sunar.
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Araç listesindeki filtreleme veya kiralama türü değişikliklerini reaktif dinliyoruz
     return ListenableBuilder(
       listenable: vehicleController,
       builder: (context, _) {
         final vehicles = vehicleController.filteredVehicles;
         return CustomScrollView(
           slivers: [
+            // Üst bölüm: Karşılama, Arama, Kategori ve Amaç seçicileri
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               sliver: SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Kullanıcının varsa devam eden aktif kiralamasını gösteren kart
                     const ActiveRentalCard(),
+                    // Başlık, arama çubuğu ve saatlik/günlük geçiş butonları
                     const HomeHeader(),
                     const SizedBox(height: 18),
+                    // Kategori filtreleme çipleri
                     const CategoryChipsBar(),
                     const SizedBox(height: 16),
+                    // Kullanım amacına göre öneri bölümü başlığı
                     _buildPurposeSectionTitle(context),
                     const SizedBox(height: 8),
+                    // Kullanım amacı seçim çipleri
                     const PurposeSelector(),
                     const SizedBox(height: 20),
+                    // Araç listesi başlığı ve adet göstergesi
                     _buildVehicleListHeader(context, vehicles.length),
                     const SizedBox(height: 12),
                   ],
                 ),
               ),
             ),
+            // Filtrelenmiş araçların kartlar halinde dikey listelendiği sliver
             _buildVehicleListSliver(vehicles),
+            // Alt gezinti çubuğu için boşluk
             const SliverToBoxAdapter(child: SizedBox(height: 80)),
           ],
         );
@@ -47,6 +61,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// 'Kullanım Amacına Göre Öneriler' bölüm başlığı
   Widget _buildPurposeSectionTitle(BuildContext context) {
     return Text(
       'Kullanım Amacına Göre Öneriler',
@@ -59,6 +74,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// 'Öne Çıkan Araçlar' başlığı ve araç sayısı sayacı
   Widget _buildVehicleListHeader(BuildContext context, int count) {
     final theme = Theme.of(context);
     return Row(
@@ -84,6 +100,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Araç kartları sliver listesi (sonuç bulunamazsa EmptyStateWidget gösterir)
   Widget _buildVehicleListSliver(List<dynamic> vehicles) {
     if (vehicles.isEmpty) {
       return const SliverToBoxAdapter(

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../controller/vehicle_controller.dart';
 import '../../auth/controller/auth_controller.dart';
 
+/// Araç Filtreleme ve Sıralama Alt Sayfası (VehicleFilterSheet)
+///
+/// Kullanıcının araçları sıralama ölçütlerine (fiyat, puan, model yılı),
+/// ehliyet uygunluğuna, yakıt türüne ve vites tipine göre filtrelemesini sağlayan alt modal sayfasıdır.
 class VehicleFilterSheet extends StatelessWidget {
   const VehicleFilterSheet({super.key});
 
@@ -36,6 +40,7 @@ class VehicleFilterSheet extends StatelessWidget {
     );
   }
 
+  /// Alt sayfa başlığı ve kapatma (X) butonu
   Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,6 +57,7 @@ class VehicleFilterSheet extends StatelessWidget {
     );
   }
 
+  /// Sıralama ölçütleri çipleri (En Düşük Fiyat, En Yüksek Fiyat, Puan, Model Yılı)
   Widget _buildSortingSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,6 +82,7 @@ class VehicleFilterSheet extends StatelessWidget {
     );
   }
 
+  /// Sadece kullanıcının ehliyetine uygun araçları gösterme anahtarı (Switch)
   Widget _buildLicenseEligibilityToggle(BuildContext context) {
     final userLicense = authController.currentUser?.driverLicenseClass ?? 'B';
     return SwitchListTile(
@@ -96,6 +103,7 @@ class VehicleFilterSheet extends StatelessWidget {
     );
   }
 
+  /// Yakıt türü filtre çipleri (Benzin, Dizel, Elektrik, Hibrit)
   Widget _buildFuelSection(BuildContext context) {
     const fuels = ['Benzin', 'Dizel', 'Elektrik', 'Hibrit'];
     return Column(
@@ -126,6 +134,7 @@ class VehicleFilterSheet extends StatelessWidget {
     );
   }
 
+  /// Vites türü filtre çipleri (Otomatik, Manuel)
   Widget _buildTransmissionSection(BuildContext context) {
     const transmissions = ['Otomatik', 'Manuel'];
     return Column(
@@ -156,6 +165,7 @@ class VehicleFilterSheet extends StatelessWidget {
     );
   }
 
+  /// Filtreleri temizle ve sonuçları gör aksiyon butonları
   Widget _buildActionButtons(BuildContext context) {
     return Row(
       children: [

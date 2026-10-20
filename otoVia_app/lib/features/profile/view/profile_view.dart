@@ -8,6 +8,11 @@ import '../../coupons/view/coupons_view.dart';
 import '../../support/view/support_view.dart';
 import '../../auth/view/welcome_view.dart';
 
+/// otoVia Kullanıcı Profil Ekranı (ProfileView)
+///
+/// Kullanıcı kartını (ad, soyad, e-posta, ehliyet sınıfı), profil düzenleme butonunu
+/// ve Rezervasyonlarım, Favorilerim, Kuponlarım, Yardım & Destek, İstatistikler
+/// ile Çıkış Yap seçeneklerini barındıran lüks menü kartını sergiler.
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
@@ -23,8 +28,10 @@ class ProfileView extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
+                // Kullanıcı kimlik ve ehliyet özeti kartı
                 _buildUserCard(context, user),
                 const SizedBox(height: 24),
+                // Profil menü listesi
                 _buildMenuItems(context),
               ],
             ),
@@ -34,6 +41,7 @@ class ProfileView extends StatelessWidget {
     );
   }
 
+  /// Kullanıcı profil kartı (Avatar, ad-soyad, e-posta, ehliyet sınıfı ve düzenle butonu)
   Widget _buildUserCard(BuildContext context, dynamic user) {
     final theme = Theme.of(context);
     return Container(
@@ -88,6 +96,7 @@ class ProfileView extends StatelessWidget {
     );
   }
 
+  /// Profil navigasyon menü öğeleri
   Widget _buildMenuItems(BuildContext context) {
     final theme = Theme.of(context);
     return Material(
@@ -125,6 +134,7 @@ class ProfileView extends StatelessWidget {
     );
   }
 
+  /// Menü satırı oluşturucu
   Widget _buildItem(BuildContext context, IconData icon, String title, VoidCallback onTap, {bool isDestructive = false}) {
     return ListTile(
       leading: Icon(icon, color: isDestructive ? const Color(0xFFD32F2F) : null, size: 22),
@@ -141,10 +151,12 @@ class ProfileView extends StatelessWidget {
     );
   }
 
+  /// Menü içi ince ayırıcı
   Widget _buildDivider(BuildContext context) {
     return Divider(height: 1, indent: 16, endIndent: 16, color: Theme.of(context).colorScheme.outline);
   }
 
+  /// Oturum kapatma onay modal penceresi
   void _confirmLogout(BuildContext context) {
     showDialog(
       context: context,

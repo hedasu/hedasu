@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import '../models/coupon_model.dart';
 import '../../../core/extensions/context_extensions.dart';
 
+/// İndirim Kuponu Kartı Bileşeni (CouponCard)
+///
+/// 'Kuponlarım' sayfasında kuponun indirim oranını (%20), kodunu,
+/// başlığını, son kullanma tarihini ve "Kullan / Kullanıldı / Süresi Doldu"
+/// durum butonunu gösterir.
 class CouponCard extends StatelessWidget {
   const CouponCard({super.key, required this.coupon});
 
+  /// Görüntülenecek kupon modeli
   final CouponModel coupon;
 
   @override
@@ -17,10 +23,13 @@ class CouponCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
+            // İndirim yüzdesi rozeti (%20)
             _buildDiscountBadge(context, isValid),
             const SizedBox(width: 14),
+            // Kupon kodu, başlık ve geçerlilik tarihi
             Expanded(child: _buildInfoColumn(context, theme, isValid)),
             const SizedBox(width: 8),
+            // Aksiyon butonu (Kullan, Kullanıldı, Süresi Doldu)
             _buildAction(context, isValid),
           ],
         ),
@@ -28,6 +37,7 @@ class CouponCard extends StatelessWidget {
     );
   }
 
+  /// Sol tarafta yer alan kare indirim yüzdesi rozeti
   Widget _buildDiscountBadge(BuildContext context, bool isValid) {
     return Container(
       width: 56,
@@ -49,6 +59,7 @@ class CouponCard extends StatelessWidget {
     );
   }
 
+  /// Kupon kodu, kampanya adı ve geçerlilik tarihi sütunu
   Widget _buildInfoColumn(BuildContext context, ThemeData theme, bool isValid) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,6 +89,7 @@ class CouponCard extends StatelessWidget {
     );
   }
 
+  /// Kupon durum butonu
   Widget _buildAction(BuildContext context, bool isValid) {
     return FilledButton.tonal(
       onPressed: isValid

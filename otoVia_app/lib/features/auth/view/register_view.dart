@@ -3,6 +3,10 @@ import '../controller/auth_controller.dart';
 import '../widgets/auth_text_field.dart';
 import '../../home/view/main_shell_view.dart';
 
+/// otoVia Kullanıcı Kayıt Ekranı (RegisterView)
+///
+/// Ad, soyad, telefon, e-posta, şifre ve şifre tekrar alanlarıyla
+/// yeni kullanıcı kaydını doğrulamalı (validation) olarak gerçekleştirir.
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
@@ -11,13 +15,18 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+  // Form doğrulama anahtarı
   final _formKey = GlobalKey<FormState>();
+
+  // Form metin alanları kontrolcüleri
   final _nameController = TextEditingController();
   final _surnameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  // Kayıt işlemi yüklenme durumu
   bool _isLoading = false;
 
   @override
@@ -60,6 +69,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
+  /// Kayıt ekranı karşılama başlığı
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
@@ -85,6 +95,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
+  /// Ad ve Soyad giriş alanları (yan yana)
   Widget _buildNameFields() {
     return Row(
       children: [
@@ -111,6 +122,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
+  /// Telefon ve e-posta giriş alanları
   Widget _buildContactFields() {
     return Column(
       children: [
@@ -135,6 +147,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
+  /// Şifre ve şifre onay giriş alanları
   Widget _buildPasswordFields() {
     return Column(
       children: [
@@ -164,19 +177,24 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
+  /// Kaydı tamamla butonu
   Widget _buildSubmitButton() {
-    return FilledButton(
-      onPressed: _isLoading ? null : _handleRegister,
-      child: _isLoading
-          ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-            )
-          : const Text('Üyeliği Tamamla'),
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton(
+        onPressed: _isLoading ? null : _handleRegister,
+        child: _isLoading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+              )
+            : const Text('Üyeliği Tamamla'),
+      ),
     );
   }
 
+  /// Kayıt işlemini gerçekleştiren fonksiyon
   Future<void> _handleRegister() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
@@ -189,6 +207,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
     if (!mounted) return;
     setState(() => _isLoading = false);
+    // Ana kabuğa yönlendir
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => const MainShellView()),

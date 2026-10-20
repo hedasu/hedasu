@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import '../models/support_ticket.dart';
 
+/// Global destek kontrolcüsü (Singleton)
 final SupportController supportController = SupportController();
 
+/// Müşteri Destek ve Canlı Yardım Kontrolcüsü
+///
+/// Kullanıcının destek biletlerini (tickets) ve anlık VIP canlı destek
+/// sohbet oturumunu (live chat) yöneten kontrolcü sınıfıdır.
 class SupportController extends ChangeNotifier {
   SupportController() {
     _initTickets();
   }
 
+  /// Destek talepleri listesi
   final List<SupportTicketModel> _tickets = [];
+
+  /// VIP Canlı sohbet mesaj geçmişi
   final List<Map<String, dynamic>> _liveChatMessages = [
     {
       'sender': 'agent',
@@ -17,9 +25,13 @@ class SupportController extends ChangeNotifier {
     },
   ];
 
+  /// Dışa açık destek biletleri listesi
   List<SupportTicketModel> get tickets => List.unmodifiable(_tickets);
+
+  /// Dışa açık canlı mesajlar listesi
   List<Map<String, dynamic>> get liveChatMessages => List.unmodifiable(_liveChatMessages);
 
+  /// Örnek başlangıç destek taleplerini oluşturur
   void _initTickets() {
     _tickets.addAll([
       SupportTicketModel(
@@ -41,6 +53,7 @@ class SupportController extends ChangeNotifier {
     ]);
   }
 
+  /// Yeni destek talebi oluşturur
   void createTicket(String subject, String message) {
     final newTicket = SupportTicketModel(
       id: 'tkt_${DateTime.now().millisecondsSinceEpoch}',
@@ -53,6 +66,7 @@ class SupportController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Canlı destek sohbetine yeni mesaj gönderir ve otomatik yanıt simüle eder
   void sendLiveChatMessage(String text) {
     if (text.trim().isEmpty) return;
     _liveChatMessages.add({
@@ -62,7 +76,7 @@ class SupportController extends ChangeNotifier {
     });
     notifyListeners();
 
-    // Otomatik asistan simülasyon cevabı
+    // 1 saniye sonra temsilci yanıtı simülasyonu
     Future.delayed(const Duration(seconds: 1), () {
       _liveChatMessages.add({
         'sender': 'agent',

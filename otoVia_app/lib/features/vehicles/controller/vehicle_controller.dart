@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import '../models/vehicle_model.dart';
 import '../../auth/controller/auth_controller.dart';
 
+/// Global araç kontrolcüsü (Singleton)
 final VehicleController vehicleController = VehicleController();
 
+/// Araç Sıralama Seçenekleri
 enum VehicleSortOption {
   lowestPrice('En Düşük Fiyat'),
   highestPrice('En Yüksek Fiyat'),
@@ -14,23 +16,46 @@ enum VehicleSortOption {
   final String displayName;
 }
 
+/// Araç Listesi ve Filtreleme Kontrolcüsü
+///
+/// Arama metni, kategori seçimi, kiralama türü (saatlik/günlük),
+/// kullanım amacı, ehliyet uygunluğu, yakıt türü, vites ve sıralama
+/// kriterlerine göre filoyu dinamik olarak filtreler ve durumu yönetir.
 class VehicleController extends ChangeNotifier {
   VehicleController() {
     _vehicles = _generateInitialVehicles();
   }
 
+  /// Uygulamadaki tüm araçların ana listesi
   late final List<VehicleModel> _vehicles;
 
+  /// Arama sorgusu metni
   String _searchQuery = '';
+
+  /// Seçili araç kategorisi (varsayılan: Tümü)
   VehicleCategory _selectedCategory = VehicleCategory.all;
-  String _rentalType = 'daily'; // 'hourly' | 'daily'
+
+  /// Kiralama türü ('daily' = Günlük, 'hourly' = Saatlik)
+  String _rentalType = 'daily';
+
+  /// Seçili kullanım amacı filtresi
   RentalPurpose? _selectedPurpose;
+
+  /// Sadece kullanıcının ehliyetine uygun araçları gösterme filtresi
   bool _onlyEligibleForLicense = false;
+
+  /// Seçili sıralama kriteri
   VehicleSortOption _sortOption = VehicleSortOption.lowestPrice;
+
+  /// Seçili yakıt türü filtresi
   String? _selectedFuelType;
+
+  /// Seçili vites türü filtresi
   String? _selectedTransmission;
 
-  // Getters
+  // ==========================================
+  // Dışa Açık Getter Özellikleri
+  // ==========================================
   List<VehicleModel> get allVehicles => List.unmodifiable(_vehicles);
   String get searchQuery => _searchQuery;
   VehicleCategory get selectedCategory => _selectedCategory;
@@ -42,11 +67,12 @@ class VehicleController extends ChangeNotifier {
   String? get selectedFuelType => _selectedFuelType;
   String? get selectedTransmission => _selectedTransmission;
 
+  /// Seçili tüm filtreler ve sıralama kuralları uygulanmış araç listesi
   List<VehicleModel> get filteredVehicles {
     final userLicense = authController.currentUser?.driverLicenseClass ?? 'B';
 
     return _vehicles.where((v) {
-      // 1. Search Query
+      // 1. Arama Metni Filtresi (Marka, model veya kategori adında arama)
       if (_searchQuery.isNotEmpty) {
         final q = _searchQuery.toLowerCase();
         final matchesName = v.fullName.toLowerCase().contains(q);
@@ -54,26 +80,26 @@ class VehicleController extends ChangeNotifier {
         if (!matchesName && !matchesCategory) return false;
       }
 
-      // 2. Category
+      // 2. Kategori Segmenti Filtresi
       if (_selectedCategory != VehicleCategory.all && v.category != _selectedCategory) {
         return false;
       }
 
-      // 3. Rental Type Support
+      // 3. Kiralama Türü Desteği (Saatlik / Günlük)
       if (isHourly && !v.supportsHourly) return false;
       if (!isHourly && !v.supportsDaily) return false;
 
-      // 4. Purpose
+      // 4. Kullanım Amacı Filtresi (Şehir içi, aile, uzun yol, yük vb.)
       if (_selectedPurpose != null && !v.suitablePurposes.contains(_selectedPurpose)) {
         return false;
       }
 
-      // 5. License Eligibility
+      // 5. Ehliyet Sınıfı Uygunluğu Filtresi
       if (_onlyEligibleForLicense && !v.isEligibleForLicense(userLicense)) {
         return false;
       }
 
-      // 6. Fuel & Transmission
+      // 6. Yakıt ve Vites Tipi Filtreleri
       if (_selectedFuelType != null && v.fuelType != _selectedFuelType) {
         return false;
       }
@@ -84,6 +110,7 @@ class VehicleController extends ChangeNotifier {
       return true;
     }).toList()
       ..sort((a, b) {
+        // Sıralama algoritması
         switch (_sortOption) {
           case VehicleSortOption.lowestPrice:
             final priceA = isHourly ? a.hourlyPrice : a.dailyPrice;
@@ -101,21 +128,25 @@ class VehicleController extends ChangeNotifier {
       });
   }
 
+  /// Arama kutusu metnini günceller ve arayüzü tetikler
   void setSearchQuery(String query) {
     _searchQuery = query;
     notifyListeners();
   }
 
+  /// Araç kategorisini günceller
   void setCategory(VehicleCategory category) {
     _selectedCategory = category;
     notifyListeners();
   }
 
+  /// Kiralama tipini (saatlik / günlük) ayarlar
   void setRentalType(String type) {
     _rentalType = type;
     notifyListeners();
   }
 
+  /// Kullanım amacını seçer veya seçimi kaldırır
   void setPurpose(RentalPurpose? purpose) {
     if (_selectedPurpose == purpose) {
       _selectedPurpose = null;
@@ -125,22 +156,26 @@ class VehicleController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Sadece ehliyete uygun araçları listeleme filtresini açıp kapatır
   void toggleLicenseEligibility() {
     _onlyEligibleForLicense = !_onlyEligibleForLicense;
     notifyListeners();
   }
 
+  /// Sıralama kriterini değiştirir
   void setSortOption(VehicleSortOption option) {
     _sortOption = option;
     notifyListeners();
   }
 
+  /// Detaylı filtreleri (yakıt ve vites) uygular
   void setFilters({String? fuel, String? transmission}) {
     _selectedFuelType = fuel;
     _selectedTransmission = transmission;
     notifyListeners();
   }
 
+  /// Tüm filtreleri sıfırlayarak varsayılan görünüme döner
   void resetFilters() {
     _searchQuery = '';
     _selectedCategory = VehicleCategory.all;
@@ -152,6 +187,7 @@ class VehicleController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// ID'ye göre tek bir araç nesnesi bulur
   VehicleModel? getVehicleById(String id) {
     try {
       return _vehicles.firstWhere((v) => v.id == id);
@@ -160,6 +196,7 @@ class VehicleController extends ChangeNotifier {
     }
   }
 
+  /// Başlangıçta filoda yer alan zengin demo araç verilerini üretir
   static List<VehicleModel> _generateInitialVehicles() {
     return [
       const VehicleModel(

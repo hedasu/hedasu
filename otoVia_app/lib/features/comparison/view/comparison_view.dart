@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../controller/comparison_controller.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 
+/// otoVia Araç Karşılaştırma Ekranı (ComparisonView)
+///
+/// Seçilen 2 veya 3 aracı yan yana bir veri tablosu ([DataTable]) içinde kıyaslar.
+/// Fiyat, puan, yakıt, vites, yolcu ve bagaj kapasitesi ile ehliyet gereksinimini karşılaştırır.
 class ComparisonView extends StatelessWidget {
   const ComparisonView({super.key});
 
@@ -22,6 +26,7 @@ class ComparisonView extends StatelessWidget {
                 ),
             ],
           ),
+          // 2'den az araç seçilmişse bilgilendirici boş durum gösterilir
           body: vehicles.length < 2
               ? const EmptyStateWidget(
                   icon: Icons.compare_arrows_rounded,
@@ -34,6 +39,7 @@ class ComparisonView extends StatelessWidget {
     );
   }
 
+  /// Yatay ve dikey kaydırılabilir karşılaştırma tablosu (DataTable)
   Widget _buildComparisonTable(BuildContext context, List<dynamic> vehicles) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -41,6 +47,7 @@ class ComparisonView extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: DataTable(
           columnSpacing: 24,
+          // Tablo Sütunları: Özellik Adı + Seçili Araçların Başlıkları
           columns: [
             const DataColumn(label: Text('Özellik', style: TextStyle(fontWeight: FontWeight.bold))),
             ...vehicles.map((v) => DataColumn(
@@ -54,6 +61,7 @@ class ComparisonView extends StatelessWidget {
                   ),
                 )),
           ],
+          // Tablo Satırları: Kriter değerleri
           rows: [
             _buildRow('Günlük Fiyat', vehicles.map((v) => '₺${v.dailyPrice.toStringAsFixed(0)} / gün').toList()),
             _buildRow('Saatlik Fiyat', vehicles.map((v) => '₺${v.hourlyPrice.toStringAsFixed(0)} / saat').toList()),
@@ -69,6 +77,7 @@ class ComparisonView extends StatelessWidget {
     );
   }
 
+  /// Tek bir özellik satırını inşa eden yardımcı metot
   DataRow _buildRow(String label, List<String> values) {
     return DataRow(
       cells: [

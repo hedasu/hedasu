@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../../vehicles/controller/vehicle_controller.dart';
 import '../../vehicles/models/vehicle_model.dart';
 
+/// Araç Segmenti Kategori Çipleri Çubuğu (CategoryChipsBar)
+///
+/// Tümü, Motosiklet, Binek, SUV, Geniş Grup ve Nakliye & Ticari segmentleri arasında
+/// yatay kaydırma ile anlık geçiş yapılmasını sağlar.
 class CategoryChipsBar extends StatelessWidget {
   const CategoryChipsBar({super.key});
 

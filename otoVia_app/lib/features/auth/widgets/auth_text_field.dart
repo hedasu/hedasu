@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Kimlik Doğrulama Metin Giriş Alanı (AuthTextField)
+///
+/// Giriş yapma ve kayıt olma formlarında kullanılan etiketli, ikonlu
+/// ve doğrulamalı (validation) standart form girdi bileşenidir.
 class AuthTextField extends StatelessWidget {
   const AuthTextField({
     super.key,
@@ -12,12 +16,25 @@ class AuthTextField extends StatelessWidget {
     this.validator,
   });
 
+  /// Metin kontrolcüsü
   final TextEditingController controller;
+
+  /// Alanın üstünde yer alan etiket başlığı
   final String label;
+
+  /// Giriş yapılmadığında gösterilecek ipucu metni
   final String hintText;
+
+  /// Giriş alanının solunda gösterilecek ön ikon
   final IconData icon;
+
+  /// Sanal klavye türü (ör. e-posta, telefon, sayısal)
   final TextInputType keyboardType;
+
+  /// Şifre alanı olup olmadığını belirler (karakterleri maskeler)
   final bool isPassword;
+
+  /// Form doğrulama fonksiyonu
   final String? Function(String?)? validator;
 
   @override
@@ -32,6 +49,7 @@ class AuthTextField extends StatelessWidget {
     );
   }
 
+  /// Alan etiketini inşa eden metot
   Widget _buildLabel(BuildContext context) {
     return Text(
       label,
@@ -43,6 +61,7 @@ class AuthTextField extends StatelessWidget {
     );
   }
 
+  /// Metin giriş kutusunu (TextFormField) inşa eden metot
   Widget _buildTextFormField(BuildContext context) {
     return TextFormField(
       controller: controller,

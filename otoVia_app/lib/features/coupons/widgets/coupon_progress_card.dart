@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import '../controller/coupon_controller.dart';
 
+/// Sadakat Kuponu İlerleme Kartı (CouponProgressCard)
+///
+/// Kullanıcıya "Her 3 kiralamada %20 indirim kuponu" kuralını hatırlatır,
+/// mevcut kiralama adedine göre ilerleme çubuğunu ve bir sonraki kupon için
+/// kaç kiralama kaldığını dinamik olarak gösterir.
 class CouponProgressCard extends StatelessWidget {
   const CouponProgressCard({super.key});
 
@@ -23,6 +28,7 @@ class CouponProgressCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Başlık ve yüzde göstergesi
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -40,6 +46,7 @@ class CouponProgressCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
+              // Şampanya tonlu ilerleme çubuğu
               LinearProgressIndicator(
                 value: progress,
                 minHeight: 6,
@@ -48,6 +55,7 @@ class CouponProgressCard extends StatelessWidget {
                 color: const Color(0xFFC0B09A),
               ),
               const SizedBox(height: 10),
+              // Kalan kiralama sayısı bilgilendirmesi
               Text(
                 'Tamamlanan her 3 kiralama için %20 kupon kazanırsınız. Sonraki kupon için $needed kiralama kaldı!',
                 style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurfaceVariant),

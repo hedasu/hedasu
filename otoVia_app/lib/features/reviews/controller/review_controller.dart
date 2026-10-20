@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import '../models/review_model.dart';
 
+/// Global yorum kontrolcüsü (Singleton)
 final ReviewController reviewController = ReviewController();
 
+/// Araç Değerlendirme ve Yorum Kontrolcüsü
+///
+/// Araçlara yapılan kullanıcı yorumlarını saklar, araç bazlı filtreler
+/// ve kullanıcıların yeni yorum/puan eklemesini yönetir.
 class ReviewController extends ChangeNotifier {
   ReviewController() {
     _initReviews();
   }
 
+  /// Tüm yorumların dahili listesi
   final List<ReviewModel> _reviews = [];
 
+  /// Dışa açık değiştirilemez yorum listesi
   List<ReviewModel> get allReviews => List.unmodifiable(_reviews);
 
+  /// Belirtilen araca ait tüm kullanıcı yorumlarını getirir
   List<ReviewModel> getReviewsForVehicle(String vehicleId) {
     return _reviews.where((r) => r.vehicleId == vehicleId).toList();
   }
 
+  /// Başlangıç demo yorumlarını oluşturur
   void _initReviews() {
     _reviews.addAll([
       ReviewModel(
@@ -45,6 +54,7 @@ class ReviewController extends ChangeNotifier {
     ]);
   }
 
+  /// Yeni kullanıcı değerlendirmesi ve puanı ekler
   void addReview({
     required String vehicleId,
     required String userName,

@@ -8,9 +8,15 @@ import '../../reviews/controller/review_controller.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../../../core/widgets/status_badge.dart';
 
+/// otoVia Araç Detay Ekranı (VehicleDetailView)
+///
+/// Seçilen aracın fotoğraflarını, ehliyet gereksinimi uyarılarını,
+/// ızgara formundaki teknik özelliklerini, donanım listesini, kullanıcı yorumlarını
+/// ve alttaki sabit rezervasyon barını sergiler.
 class VehicleDetailView extends StatelessWidget {
   const VehicleDetailView({super.key, required this.vehicle});
 
+  /// İncelenen araç nesnesi
   final VehicleModel vehicle;
 
   @override
@@ -21,20 +27,26 @@ class VehicleDetailView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Üst galeri görseli
             _buildGallerySection(context),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Araç başlığı, kategori, yıl ve puan
                   _buildTitleSection(context),
                   const SizedBox(height: 16),
+                  // Ehliyet uyumluluğu kontrol kartı
                   _buildLicenseAlert(context),
                   const SizedBox(height: 20),
+                  // 2x3 formatında teknik özellikler ızgarası
                   VehicleSpecsGrid(vehicle: vehicle),
                   const SizedBox(height: 24),
+                  // Donanım ve öne çıkan özellikler çipleri
                   _buildFeaturesSection(context),
                   const SizedBox(height: 24),
+                  // Kullanıcı değerlendirmeleri ve yorumlar listesi
                   _buildReviewsSection(context),
                   const SizedBox(height: 100),
                 ],
@@ -43,10 +55,12 @@ class VehicleDetailView extends StatelessWidget {
           ],
         ),
       ),
+      // Altta sabit duran fiyat ve 'Rezerve Et' butonu çubuğu
       bottomSheet: _buildBottomBookingBar(context),
     );
   }
 
+  /// Üst çubuk: Araç adı, favori ekleme ve karşılaştırmaya ekleme butonları
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       title: Text(vehicle.fullName),
@@ -57,6 +71,7 @@ class VehicleDetailView extends StatelessWidget {
     );
   }
 
+  /// AppBar üzerindeki dinamik favori butonu
   Widget _buildFavoriteAction(BuildContext context) {
     return ListenableBuilder(
       listenable: favoritesController,
@@ -73,6 +88,7 @@ class VehicleDetailView extends StatelessWidget {
     );
   }
 
+  /// AppBar üzerindeki araç karşılaştırma butonu
   Widget _buildCompareAction(BuildContext context) {
     return ListenableBuilder(
       listenable: comparisonController,
@@ -89,6 +105,7 @@ class VehicleDetailView extends StatelessWidget {
     );
   }
 
+  /// 16:9 oranlı vitrin görseli
   Widget _buildGallerySection(BuildContext context) {
     return AspectRatio(
       aspectRatio: 16 / 9,
@@ -105,6 +122,7 @@ class VehicleDetailView extends StatelessWidget {
     );
   }
 
+  /// Araç ismi ve ortalama değerlendirme puanı
   Widget _buildTitleSection(BuildContext context) {
     final theme = Theme.of(context);
     return Row(
@@ -151,6 +169,7 @@ class VehicleDetailView extends StatelessWidget {
     );
   }
 
+  /// Giriş yapan kullanıcının ehliyet sınıfının bu araç için geçerli olup olmadığını denetleyen uyarı kartı
   Widget _buildLicenseAlert(BuildContext context) {
     final userLicense = authController.currentUser?.driverLicenseClass ?? 'B';
     final isEligible = vehicle.isEligibleForLicense(userLicense);
@@ -192,6 +211,7 @@ class VehicleDetailView extends StatelessWidget {
     );
   }
 
+  /// Öne çıkan donanım ve konfor özellikleri listesi
   Widget _buildFeaturesSection(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
@@ -237,6 +257,7 @@ class VehicleDetailView extends StatelessWidget {
     );
   }
 
+  /// Kullanıcı yorumları ve puanlama bölümü
   Widget _buildReviewsSection(BuildContext context) {
     final theme = Theme.of(context);
     final reviews = reviewController.getReviewsForVehicle(vehicle.id);
@@ -274,6 +295,7 @@ class VehicleDetailView extends StatelessWidget {
     );
   }
 
+  /// Tekil bir kullanıcı yorum kartı
   Widget _buildReviewCard(BuildContext context, dynamic review) {
     final theme = Theme.of(context);
     return Container(
@@ -320,6 +342,7 @@ class VehicleDetailView extends StatelessWidget {
     );
   }
 
+  /// Ekranın en altında sabit duran fiyatlandırma ve rezervasyon adımlarına geçiş çubuğu
   Widget _buildBottomBookingBar(BuildContext context) {
     final theme = Theme.of(context);
     return Container(

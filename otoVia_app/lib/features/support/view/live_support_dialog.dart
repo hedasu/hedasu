@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../controller/support_controller.dart';
 
+/// VIP Canlı Destek Alt Sayfası (LiveSupportDialog)
+///
+/// Kullanıcı aktif kiralaması veya araç tercihi sırasında 7/24 operasyon ekibiyle
+/// anlık mesajlaşabileceği şık bir modal alt sohbet penceresidir.
 class LiveSupportDialog extends StatefulWidget {
   const LiveSupportDialog({super.key});
 
@@ -9,6 +13,7 @@ class LiveSupportDialog extends StatefulWidget {
 }
 
 class _LiveSupportDialogState extends State<LiveSupportDialog> {
+  // Mesaj metni giriş kontrolcüsü
   final TextEditingController _msgController = TextEditingController();
 
   @override
@@ -27,16 +32,20 @@ class _LiveSupportDialogState extends State<LiveSupportDialog> {
       ),
       child: Column(
         children: [
+          // Üst temsilci durum çubuğu
           _buildHeader(context),
           const Divider(height: 1),
+          // Mesaj geçmişi baloncukları listesi
           Expanded(child: _buildMessagesList()),
           const Divider(height: 1),
+          // Mesaj yazma ve gönderme çubuğu
           _buildInputBar(context),
         ],
       ),
     );
   }
 
+  /// Canlı destek temsilcisi bilgisi ve kapatma butonu
   Widget _buildHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -62,6 +71,7 @@ class _LiveSupportDialogState extends State<LiveSupportDialog> {
     );
   }
 
+  /// Mesaj baloncukları listesi (Kullanıcı sağda, temsilci solda)
   Widget _buildMessagesList() {
     return ListenableBuilder(
       listenable: supportController,
@@ -102,6 +112,7 @@ class _LiveSupportDialogState extends State<LiveSupportDialog> {
     );
   }
 
+  /// Mesaj giriş alanı ve gönder butonu
   Widget _buildInputBar(BuildContext context) {
     return SafeArea(
       top: false,

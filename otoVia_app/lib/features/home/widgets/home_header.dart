@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../../vehicles/controller/vehicle_controller.dart';
 import '../../vehicles/widgets/vehicle_filter_sheet.dart';
 
+/// Ana Sayfa Başlık ve Arama Alanı (HomeHeader)
+///
+/// 'Aracını keşfet.' editoryal başlığını, arama çubuğunu, filtreleme butonunu
+/// ve Günlük / Saatlik kiralama türü geçişini (SegmentedButton) barındırır.
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
 
@@ -10,15 +14,19 @@ class HomeHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Karşılama başlığı ve alt metin
         _buildGreeting(context),
         const SizedBox(height: 16),
+        // Arama çubuğu ve filtre butonu
         _buildSearchAndFilterRow(context),
         const SizedBox(height: 16),
+        // Günlük / Saatlik kiralama türü seçicisi
         _buildRentalTypeSegmentedButton(context),
       ],
     );
   }
 
+  /// Editoryal karşılama başlığı
   Widget _buildGreeting(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
@@ -45,6 +53,7 @@ class HomeHeader extends StatelessWidget {
     );
   }
 
+  /// Arama çubuğu (SearchBar) ve filtreleme alt sayfasını açan buton
   Widget _buildSearchAndFilterRow(BuildContext context) {
     return Row(
       children: [
@@ -70,6 +79,7 @@ class HomeHeader extends StatelessWidget {
     );
   }
 
+  /// Günlük / Saatlik kiralama tercihi geçiş butonu (SegmentedButton)
   Widget _buildRentalTypeSegmentedButton(BuildContext context) {
     return ListenableBuilder(
       listenable: vehicleController,

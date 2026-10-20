@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../../vehicles/controller/vehicle_controller.dart';
 import '../../vehicles/models/vehicle_model.dart';
 
+/// Kullanım Amacı Seçim Çipleri Çubuğu (PurposeSelector)
+///
+/// Şehir İçi Ulaşım, Aile Seyahati, Uzun Yol, Grup Yolculuğu ve Eşya Taşıma
+/// gibi ihtiyaçlara göre araçları akıllı şekilde filtreler.
 class PurposeSelector extends StatelessWidget {
   const PurposeSelector({super.key});
 

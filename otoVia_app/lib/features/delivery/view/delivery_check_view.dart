@@ -3,9 +3,15 @@ import '../../reservations/models/reservation_model.dart';
 import '../../reservations/controller/reservation_controller.dart';
 import '../../../core/extensions/context_extensions.dart';
 
+/// otoVia Araç Teslim Etme ve Kontrol Ekranı (DeliveryCheckView)
+///
+/// Kullanıcı aracı iade ederken güncel fotoğraflar çekip ekleyebilir,
+/// yakıt ve kilometre durumuna dair teslimat notlarını yazabilir
+/// ve iade işlemini onaylayarak kiralamayı tamamlayabilir.
 class DeliveryCheckView extends StatefulWidget {
   const DeliveryCheckView({super.key, required this.reservation});
 
+  /// Teslim edilen rezervasyon kaydı
   final ReservationModel reservation;
 
   @override
@@ -13,8 +19,13 @@ class DeliveryCheckView extends StatefulWidget {
 }
 
 class _DeliveryCheckViewState extends State<DeliveryCheckView> {
+  // Teslimat notu metin kontrolcüsü
   final TextEditingController _notesController = TextEditingController();
+
+  // Eklenen fotoğraf sayısı sayacı (demo amaçlı başlangıç değeri 2 verilmiştir)
   int _photosAdded = 2;
+
+  // Gönderim yüklenme durumu
   bool _isSubmitting = false;
 
   @override
@@ -32,12 +43,16 @@ class _DeliveryCheckViewState extends State<DeliveryCheckView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Araç özet bilgisi kutusu
             _buildVehicleSummary(context),
             const SizedBox(height: 20),
+            // Fotoğraf ekleme bölümü
             _buildPhotoUploadSection(context),
             const SizedBox(height: 20),
+            // Hasar, yakıt ve durum notları metin alanı
             _buildDamageNotesField(context),
             const SizedBox(height: 28),
+            // Teslimatı onayla ve tamamla butonu
             _buildSubmitButton(context),
           ],
         ),
@@ -45,6 +60,7 @@ class _DeliveryCheckViewState extends State<DeliveryCheckView> {
     );
   }
 
+  /// Araç resmi, adı ve teslim bırakma lokasyonu özeti
   Widget _buildVehicleSummary(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
@@ -86,6 +102,7 @@ class _DeliveryCheckViewState extends State<DeliveryCheckView> {
     );
   }
 
+  /// 4 açıdan fotoğraf yükleme alanı
   Widget _buildPhotoUploadSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,6 +132,7 @@ class _DeliveryCheckViewState extends State<DeliveryCheckView> {
     );
   }
 
+  /// Teslimat notu ve kilometre açıklaması giriş alanı
   Widget _buildDamageNotesField(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,15 +150,24 @@ class _DeliveryCheckViewState extends State<DeliveryCheckView> {
     );
   }
 
+  /// Teslimatı tamamla butonu
   Widget _buildSubmitButton(BuildContext context) {
-    return FilledButton(
-      onPressed: _isSubmitting ? null : _submitDropoff,
-      child: _isSubmitting
-          ? const CircularProgressIndicator(color: Colors.white)
-          : const Text('Teslimatı Onayla ve Tamamla'),
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton(
+        onPressed: _isSubmitting ? null : _submitDropoff,
+        child: _isSubmitting
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+              )
+            : const Text('Teslimatı Onayla ve Tamamla'),
+      ),
     );
   }
 
+  /// Teslimat verilerini controller'a iletip işlemi tamamlayan fonksiyon
   Future<void> _submitDropoff() async {
     setState(() => _isSubmitting = true);
     await Future.delayed(const Duration(milliseconds: 600));

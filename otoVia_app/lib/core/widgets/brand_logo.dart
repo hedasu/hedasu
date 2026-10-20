@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../constants/app_assets.dart';
 
+/// otoVia Marka Logosu Bileşeni
+///
+/// Uygulama üst çubuğu (AppBar), karşılama ekranı ve giriş pencerelerinde
+/// marka kimliğini tutarlı boyutta ve şık bir tipografiyle sergiler.
 class BrandLogo extends StatelessWidget {
   const BrandLogo({
     super.key,
@@ -9,8 +13,13 @@ class BrandLogo extends StatelessWidget {
     this.fontSize = 20,
   });
 
+  /// Logo simgesinin piksel boyutu (kare)
   final double size;
+
+  /// Marka metninin ("otoVia") logonun yanında gösterilip gösterilmeyeceği
   final bool showText;
+
+  /// Marka metninin punto büyüklüğü
   final double fontSize;
 
   @override
@@ -28,6 +37,7 @@ class BrandLogo extends StatelessWidget {
     );
   }
 
+  /// Logo görselini oluşturan yardımcı metot (görsel yüklenemezse şık harf ikonu gösterir)
   Widget _buildLogoImage() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(size * 0.25),
@@ -58,6 +68,7 @@ class BrandLogo extends StatelessWidget {
     );
   }
 
+  /// 'oto' (hafif) ve 'Via' (kalın) kısımlarını stilize eden zengin metin (RichText)
   Widget _buildBrandText(BuildContext context) {
     final theme = Theme.of(context);
     return RichText(

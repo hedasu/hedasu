@@ -4,9 +4,14 @@ import '../controller/review_controller.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../../../core/extensions/context_extensions.dart';
 
+/// Araç Değerlendirme ve Yorum Ekleme Modal Penceresi (AddReviewDialog)
+///
+/// Tamamlanan kiralama sonrası 5 yıldızlı puanlama, donanım/amaç/destek memnuniyeti
+/// kontrol onay kutuları ve deneyim yorumu giriş alanını barındırır.
 class AddReviewDialog extends StatefulWidget {
   const AddReviewDialog({super.key, required this.vehicle});
 
+  /// Değerlendirilen araç
   final VehicleModel vehicle;
 
   @override
@@ -14,8 +19,13 @@ class AddReviewDialog extends StatefulWidget {
 }
 
 class _AddReviewDialogState extends State<AddReviewDialog> {
+  // Seçilen yıldız puanı (varsayılan 5.0)
   double _rating = 5.0;
+
+  // Yorum metni kontrolcüsü
   final TextEditingController _commentController = TextEditingController();
+
+  // Deneyim kriterleri onay durumları
   bool _specsMatched = true;
   bool _purposeMatched = true;
   bool _supportSatisfied = true;
@@ -35,10 +45,13 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // 5 Yıldızlı Puanlama Alanı
             _buildRatingStars(),
             const SizedBox(height: 16),
+            // Donanım, amaç ve destek memnuniyeti onay kutuları
             _buildCriteriaCheckboxes(),
             const SizedBox(height: 16),
+            // Yorum metni giriş alanı
             _buildCommentField(),
           ],
         ),
@@ -56,6 +69,7 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
     );
   }
 
+  /// 5 Yıldızlı dokunmatik puan seçici
   Widget _buildRatingStars() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -73,6 +87,7 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
     );
   }
 
+  /// Memnuniyet kriterleri onay kutuları listesi
   Widget _buildCriteriaCheckboxes() {
     return Column(
       children: [
@@ -98,6 +113,7 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
     );
   }
 
+  /// Yorum yazma çok satırlı metin kutusu
   Widget _buildCommentField() {
     return TextField(
       controller: _commentController,
@@ -108,6 +124,7 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
     );
   }
 
+  /// Yorumu doğrulayıp ReviewController'a ekleyen fonksiyon
   void _submitReview() {
     final comment = _commentController.text.trim();
     if (comment.isEmpty) {

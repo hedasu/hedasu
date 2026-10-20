@@ -5,6 +5,10 @@ import '../../comparison/view/comparison_view.dart';
 import '../../vehicles/widgets/vehicle_card.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 
+/// otoVia Favoriler Ekranı (FavoritesView)
+///
+/// Kullanıcının kalp simgesiyle favorilerine eklediği araçları listeler.
+/// Karşılaştırma listesinde araç seçiliyse alt köşede hızlı karşılaştırma FAB butonu sunar.
 class FavoritesView extends StatelessWidget {
   const FavoritesView({super.key});
 
@@ -23,12 +27,14 @@ class FavoritesView extends StatelessWidget {
     );
   }
 
+  /// AppBar: 'Favorilerim (X)' başlığı
   PreferredSizeWidget _buildAppBar(BuildContext context, int count) {
     return AppBar(
       title: Text('Favorilerim ($count)'),
     );
   }
 
+  /// Favori listesi gövdesi (boş ise açıklayıcı EmptyStateWidget gösterilir)
   Widget _buildBody(BuildContext context, List<dynamic> favorites) {
     if (favorites.isEmpty) {
       return const EmptyStateWidget(
@@ -54,6 +60,7 @@ class FavoritesView extends StatelessWidget {
     );
   }
 
+  /// Karşılaştırma listesinde araç varsa gösterilen genişletilmiş FAB (FloatingActionButton)
   Widget? _buildComparisonFAB(BuildContext context) {
     return ListenableBuilder(
       listenable: comparisonController,

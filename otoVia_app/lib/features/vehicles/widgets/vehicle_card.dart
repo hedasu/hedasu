@@ -5,6 +5,11 @@ import '../../comparison/controller/comparison_controller.dart';
 import '../view/vehicle_detail_view.dart';
 import '../../../core/widgets/status_badge.dart';
 
+/// otoVia Araç Kartı Bileşeni (VehicleCard)
+///
+/// Ana sayfa listesinde ve arama sonuçlarında aracı lüks editoryal stilde sergiler.
+/// 16:9 görsel, kategori rozeti, favori butonu, araç adı, puan, özellik etiketleri,
+/// fiyat ve karşılaştırma/detay aksiyon butonlarını içerir.
 class VehicleCard extends StatelessWidget {
   const VehicleCard({
     super.key,
@@ -12,7 +17,10 @@ class VehicleCard extends StatelessWidget {
     required this.isHourly,
   });
 
+  /// Kartta sergilenecek araç modeli
   final VehicleModel vehicle;
+
+  /// Saatlik kiralama modu mu yoksa günlük mü olduğunu belirler
   final bool isHourly;
 
   @override
@@ -22,18 +30,23 @@ class VehicleCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Araç fotoğrafı, kategori etiketi ve favori butonu
           _buildImageSection(context),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Araç adı ve yıldızlı puan
                 _buildHeaderRow(context),
                 const SizedBox(height: 8),
+                // Yıl, yakıt, vites ve ehliyet sınıfı etiketleri
                 _buildSpecsRow(context),
                 const SizedBox(height: 14),
+                // İnce ayırıcı çizgi
                 _buildDivider(context),
                 const SizedBox(height: 14),
+                // Fiyat bilgisi, karşılaştır butonu ve detay sayfası butonu
                 _buildBottomActionRow(context),
               ],
             ),
@@ -43,6 +56,7 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
+  /// 16:9 oranlı görsel, kategori rozeti ve favori butonunu içeren üst görsel alanı
   Widget _buildImageSection(BuildContext context) {
     final theme = Theme.of(context);
     return Stack(
@@ -64,6 +78,7 @@ class VehicleCard extends StatelessWidget {
             ),
           ),
         ),
+        // Kategori Rozeti (Sol üst)
         Positioned(
           top: 12,
           left: 12,
@@ -73,6 +88,7 @@ class VehicleCard extends StatelessWidget {
             textColor: Colors.white,
           ),
         ),
+        // Favorilere Ekle / Çıkar Butonu (Sağ üst)
         Positioned(
           top: 12,
           right: 12,
@@ -82,6 +98,7 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
+  /// Favori durumu dinleyen ve tek tıkla favoriye ekleyen buton
   Widget _buildFavoriteButton(BuildContext context) {
     return ListenableBuilder(
       listenable: favoritesController,
@@ -107,6 +124,7 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
+  /// Araç tam adı ve puan ortalaması satırı
   Widget _buildHeaderRow(BuildContext context) {
     final theme = Theme.of(context);
     return Row(
@@ -140,6 +158,7 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
+  /// Temel teknik özellikleri (yıl, yakıt, vites, ehliyet) gösteren etiketler
   Widget _buildSpecsRow(BuildContext context) {
     final theme = Theme.of(context);
     return Row(
@@ -159,6 +178,7 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
+  /// Küçük teknik özellik hap etiketi (badge)
   Widget _buildSpecTag(String text, ThemeData theme) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -177,10 +197,12 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
+  /// Kart içi ince ayırıcı
   Widget _buildDivider(BuildContext context) {
     return Divider(height: 1, color: Theme.of(context).colorScheme.outline);
   }
 
+  /// Alt aksiyon alanı: Fiyat, Karşılaştırma butonu ve Detay İncele butonu
   Widget _buildBottomActionRow(BuildContext context) {
     final theme = Theme.of(context);
     final double price = isHourly ? vehicle.hourlyPrice : vehicle.dailyPrice;
@@ -188,6 +210,7 @@ class VehicleCard extends StatelessWidget {
 
     return Row(
       children: [
+        // Fiyat ve birim göstergesi
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -209,8 +232,10 @@ class VehicleCard extends StatelessWidget {
           ],
         ),
         const Spacer(),
+        // Karşılaştırma listesine ekle butonu
         _buildCompareIconButton(context),
         const SizedBox(width: 8),
+        // Detay sayfasına geçiş butonu
         FilledButton(
           onPressed: () => Navigator.push(
             context,
@@ -228,6 +253,7 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
+  /// Karşılaştırma listesi seçim butonunu inşa eden metot
   Widget _buildCompareIconButton(BuildContext context) {
     return ListenableBuilder(
       listenable: comparisonController,

@@ -8,6 +8,11 @@ import '../../reservations/view/reservations_view.dart';
 import '../../notifications/view/notifications_view.dart';
 import '../../profile/view/profile_view.dart';
 
+/// otoVia Ana Kabuk Ekranı (MainShellView)
+///
+/// Uygulamanın 5 ana sekmesini (Ana Sayfa, Favoriler, Kiralamalar, Bildirimler, Profil)
+/// bir [IndexedStack] içerisinde tutarak sayfaların durumunu (scroll vb.) korur.
+/// Üst çubukta (AppBar) logo, tema değiştirici (Açık/Koyu) ve bildirim rozeti yer alır.
 class MainShellView extends StatefulWidget {
   const MainShellView({super.key});
 
@@ -16,8 +21,10 @@ class MainShellView extends StatefulWidget {
 }
 
 class _MainShellViewState extends State<MainShellView> {
+  // Seçili aktif sekme indeksi
   int _currentIndex = 0;
 
+  // Alt sekmelere karşılık gelen sayfa widget'ları listesi
   static const List<Widget> _pages = [
     HomeView(),
     FavoritesView(),
@@ -38,6 +45,7 @@ class _MainShellViewState extends State<MainShellView> {
     );
   }
 
+  /// Üst AppBar: Marka logosu, tema geçiş butonu ve okunmamış bildirim rozeti
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       title: const BrandLogo(size: 32, fontSize: 20),
@@ -48,6 +56,7 @@ class _MainShellViewState extends State<MainShellView> {
     );
   }
 
+  /// Tek dokunuşla koyu ve açık tema arasında geçiş yapan buton
   Widget _buildThemeToggle(BuildContext context) {
     return ListenableBuilder(
       listenable: themeController,
@@ -65,6 +74,7 @@ class _MainShellViewState extends State<MainShellView> {
     );
   }
 
+  /// Bildirim simgesi ve varsa okunmamış bildirim adedini gösteren kırmızı sayaç rozeti
   Widget _buildNotificationAction(BuildContext context) {
     return ListenableBuilder(
       listenable: notificationController,
@@ -104,6 +114,7 @@ class _MainShellViewState extends State<MainShellView> {
     );
   }
 
+  /// Alt navigasyon çubuğu (Material 3 NavigationBar)
   Widget _buildBottomNav(BuildContext context) {
     return NavigationBar(
       selectedIndex: _currentIndex,

@@ -3,6 +3,10 @@ import '../controller/support_controller.dart';
 import '../models/support_ticket.dart';
 import '../../../core/widgets/status_badge.dart';
 
+/// otoVia Yardım ve Müşteri Destek Ekranı (SupportView)
+///
+/// Kullanıcının destek taleplerini (biletler) ve sıkça sorulan soruları (SSS)
+/// iki ayrı sekmede sergiler. Ayrıca sağ altta yeni destek talebi oluşturma FAB butonu sunar.
 class SupportView extends StatelessWidget {
   const SupportView({super.key});
 
@@ -22,10 +26,13 @@ class SupportView extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
+            // Kullanıcının biletleri sekmesi
             _buildTicketsTab(context),
+            // Sıkça Sorulan Sorular akordiyon sekmesi
             _buildFaqTab(context),
           ],
         ),
+        // Yeni destek bileti açma butonu
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => _showCreateTicketDialog(context),
           icon: const Icon(Icons.add_comment_outlined),
@@ -35,6 +42,7 @@ class SupportView extends StatelessWidget {
     );
   }
 
+  /// Destek talepleri listesi
   Widget _buildTicketsTab(BuildContext context) {
     return ListenableBuilder(
       listenable: supportController,
@@ -53,6 +61,7 @@ class SupportView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Durum rozeti ve tarih
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -64,9 +73,12 @@ class SupportView extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
+                      // Talep konusu
                       Text(t.subject, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                       const SizedBox(height: 4),
+                      // Kullanıcı mesajı
                       Text(t.message, style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                      // Varsa otoVia operasyon ekibi yanıtı
                       if (t.reply != null) ...[
                         const Divider(height: 16),
                         Text('otoVia Yanıtı: ${t.reply}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFFC0B09A))),
@@ -82,6 +94,7 @@ class SupportView extends StatelessWidget {
     );
   }
 
+  /// Destek talebi durumu rozeti (Beklemede, İnceleniyor, Yanıtlandı, Çözüldü)
   Widget _buildStatusBadge(TicketStatus status) {
     Color bg;
     switch (status) {
@@ -101,6 +114,7 @@ class SupportView extends StatelessWidget {
     return StatusBadge(text: status.displayName, backgroundColor: bg, textColor: Colors.white);
   }
 
+  /// Sıkça Sorulan Sorular (SSS) akordiyon listesi
   Widget _buildFaqTab(BuildContext context) {
     const faqs = [
       {'q': 'Kiralama için hangi belgeler gereklidir?', 'a': 'T.C. Kimlik kartınız, ilgili araç sınıfına uygun geçerli sürücü belgeniz ve adınıza düzenlenmiş kredi kartı yeterlidir.'},
@@ -126,6 +140,7 @@ class SupportView extends StatelessWidget {
     );
   }
 
+  /// Yeni destek talebi oluşturma modal penceresi
   void _showCreateTicketDialog(BuildContext context) {
     final subCtrl = TextEditingController();
     final msgCtrl = TextEditingController();

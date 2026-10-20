@@ -4,6 +4,10 @@ import '../widgets/coupon_card.dart';
 import '../widgets/coupon_progress_card.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 
+/// otoVia Kuponlarım Ekranı (CouponsView)
+///
+/// Kullanıcının kazandığı indirim kuponlarını sekmeli (Kullanılabilir, Kullanılmış, Süresi Dolan)
+/// olarak görüntüler ve üst kısımda sadakat ödülü ilerleme kartını sergiler.
 class CouponsView extends StatelessWidget {
   const CouponsView({super.key});
 
@@ -27,10 +31,12 @@ class CouponsView extends StatelessWidget {
           builder: (context, _) {
             return Column(
               children: [
+                // Sadakat Kuponu İlerleme Kartı
                 const Padding(
                   padding: EdgeInsets.all(16),
                   child: CouponProgressCard(),
                 ),
+                // 3 Sekmeli Kupon Listesi
                 Expanded(
                   child: TabBarView(
                     children: [
@@ -48,6 +54,7 @@ class CouponsView extends StatelessWidget {
     );
   }
 
+  /// Sekme içi kupon listesini oluşturan yardımcı metot
   Widget _buildList(List<dynamic> list, String emptyTitle, String emptyMsg) {
     if (list.isEmpty) {
       return EmptyStateWidget(

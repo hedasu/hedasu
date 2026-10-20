@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import '../models/notification_model.dart';
 
+/// Global bildirimler kontrolcüsü (Singleton)
 final NotificationController notificationController = NotificationController();
 
+/// Uygulama İçi Bildirimler Kontrolcüsü
+///
+/// Rezervasyon güncellemeleri, kiralama bitiş hatırlatmaları, kazanılan kuponlar
+/// ve destek mesajları bildirimlerini listeler, okunmamış sayısını hesaplar ve yönetir.
 class NotificationController extends ChangeNotifier {
   NotificationController() {
     _initNotifications();
   }
 
+  /// Tüm bildirimler listesi
   final List<NotificationModel> _notifications = [];
 
+  /// Dışa açık bildirim listesi
   List<NotificationModel> get notifications => List.unmodifiable(_notifications);
+
+  /// Okunmamış bildirim adedi (AppBar üzerindeki sayaç rozetinde gösterilir)
   int get unreadCount => _notifications.where((n) => !n.isRead).length;
 
+  /// Örnek başlangıç bildirimlerini oluşturur
   void _initNotifications() {
     _notifications.addAll([
       NotificationModel(
@@ -50,6 +60,7 @@ class NotificationController extends ChangeNotifier {
     ]);
   }
 
+  /// Tek bir bildirimi okundu olarak işaretler
   void markAsRead(String id) {
     final index = _notifications.indexWhere((n) => n.id == id);
     if (index != -1 && !_notifications[index].isRead) {
@@ -58,6 +69,7 @@ class NotificationController extends ChangeNotifier {
     }
   }
 
+  /// Listedeki tüm bildirimleri tek seferde okundu durumuna getirir
   void markAllAsRead() {
     for (int i = 0; i < _notifications.length; i++) {
       _notifications[i] = _notifications[i].copyWith(isRead: true);
@@ -65,6 +77,7 @@ class NotificationController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Bildirim listesini tamamen temizler
   void clearAll() {
     _notifications.clear();
     notifyListeners();

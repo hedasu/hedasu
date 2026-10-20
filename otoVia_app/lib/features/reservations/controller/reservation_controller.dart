@@ -5,17 +5,26 @@ import '../../vehicles/controller/vehicle_controller.dart';
 import '../../delivery/models/delivery_record.dart';
 import '../../coupons/controller/coupon_controller.dart';
 
+/// Global rezervasyon kontrolcüsü (Singleton)
 final ReservationController reservationController = ReservationController();
 
+/// Rezervasyon ve Kiralama Süreçleri Kontrolcüsü
+///
+/// Kullanıcının aktif, gelecek, tamamlanan ve iptal edilen kiralamalarını yönetir.
+/// Yeni rezervasyon oluşturma, kiralama süresi uzatma, kiralama iptali ve
+/// araç teslim tutanağı tamamlama gibi kritik iş mantığını yürütür.
 class ReservationController extends ChangeNotifier {
   ReservationController() {
     _initReservations();
   }
 
+  /// Tüm rezervasyonların özel listesi
   final List<ReservationModel> _reservations = [];
 
+  /// Dışa açık değiştirilemez rezervasyon listesi
   List<ReservationModel> get allReservations => List.unmodifiable(_reservations);
 
+  /// Şu an devam eden aktif kiralama (varsa tekil nesne, yoksa null)
   ReservationModel? get activeRental {
     try {
       return _reservations.firstWhere((r) => r.status == ReservationStatus.active);
@@ -24,18 +33,23 @@ class ReservationController extends ChangeNotifier {
     }
   }
 
+  /// Gelecek tarihli onaylanmış rezervasyonlar listesi
   List<ReservationModel> get upcomingReservations =>
       _reservations.where((r) => r.status == ReservationStatus.upcoming).toList();
 
+  /// Şu anda aktif olan kiralamalar listesi
   List<ReservationModel> get activeReservations =>
       _reservations.where((r) => r.status == ReservationStatus.active).toList();
 
+  /// Başarıyla tamamlanmış geçmiş kiralamalar listesi
   List<ReservationModel> get completedReservations =>
       _reservations.where((r) => r.status == ReservationStatus.completed).toList();
 
+  /// İptal edilmiş rezervasyonlar listesi
   List<ReservationModel> get cancelledReservations =>
       _reservations.where((r) => r.status == ReservationStatus.cancelled).toList();
 
+  /// Başlangıçta kullanıcıya dolu bir deneyim sunmak için örnek rezervasyonlar oluşturur
   void _initReservations() {
     final v1 = vehicleController.getVehicleById('veh_01'); // Porsche Taycan
     final v2 = vehicleController.getVehicleById('veh_02'); // Mercedes S 500
@@ -123,6 +137,7 @@ class ReservationController extends ChangeNotifier {
     }
   }
 
+  /// Yeni bir kiralama rezervasyonu oluşturur ve listeye ekler
   Future<ReservationModel> createReservation({
     required VehicleModel vehicle,
     required String rentalType,
@@ -158,6 +173,7 @@ class ReservationController extends ChangeNotifier {
       contractAccepted: true,
     );
 
+    // Eğer indirim kuponu kullanıldıysa kuponu kullanıldı olarak işaretle
     if (appliedCouponCode != null && appliedCouponCode.isNotEmpty) {
       couponController.useCoupon(appliedCouponCode);
     }
@@ -167,6 +183,7 @@ class ReservationController extends ChangeNotifier {
     return newRes;
   }
 
+  /// Belirtilen rezervasyonu iptal eder
   void cancelReservation(String id) {
     final index = _reservations.indexWhere((r) => r.id == id);
     if (index != -1) {
@@ -177,6 +194,7 @@ class ReservationController extends ChangeNotifier {
     }
   }
 
+  /// Aktif kiralamanın süresini ek saat veya gün kadar uzatır ve ücreti günceller
   void extendReservation(String id, int extraUnits) {
     final index = _reservations.indexWhere((r) => r.id == id);
     if (index != -1) {
@@ -196,6 +214,7 @@ class ReservationController extends ChangeNotifier {
     }
   }
 
+  /// Araç iade / teslim sürecini onaylar ve tamamlandı durumuna geçirir
   void completeDeliveryDropoff(String id, String notes, int photosCount) {
     final index = _reservations.indexWhere((r) => r.id == id);
     if (index != -1) {
@@ -209,8 +228,10 @@ class ReservationController extends ChangeNotifier {
         status: ReservationStatus.completed,
         deliveryRecord: updatedDelivery,
       );
+      // Kullanıcının tamamlanan kiralama sayacını artırarak kupon kazanımını tetikler
       couponController.incrementCompletedRentals();
       notifyListeners();
     }
   }
 }
+

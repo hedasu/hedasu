@@ -4,6 +4,10 @@ import '../widgets/auth_text_field.dart';
 import '../../home/view/main_shell_view.dart';
 import '../../../core/extensions/context_extensions.dart';
 
+/// otoVia Kullanıcı Giriş Ekranı (LoginView)
+///
+/// Kullanıcının e-posta veya telefon ve şifresi ile kimlik doğrulamasını sağlar.
+/// Form doğrulaması (validation) ve şifremi unuttum aksiyonunu barındırır.
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -12,9 +16,14 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  // Form doğrulama anahtarı
   final _formKey = GlobalKey<FormState>();
+
+  // Metin kontrolcüleri (Kolay test edilebilmesi için başlangıçta örnek veri verilmiştir)
   final _emailController = TextEditingController(text: 'deniz.yilmaz@otovia.com');
   final _passwordController = TextEditingController(text: '123456');
+
+  // Giriş işlemi yüklenme durumu
   bool _isLoading = false;
 
   @override
@@ -53,6 +62,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+  /// Karşılama ve yönlendirme başlık alanı
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
@@ -78,6 +88,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+  /// E-posta / telefon giriş alanı
   Widget _buildEmailField() {
     return AuthTextField(
       controller: _emailController,
@@ -93,6 +104,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+  /// Şifre giriş alanı (maskeli)
   Widget _buildPasswordField() {
     return AuthTextField(
       controller: _passwordController,
@@ -109,6 +121,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+  /// Şifremi unuttum bağlantısı
   Widget _buildForgotPassword(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
@@ -121,25 +134,31 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+  /// Giriş yap butonu
   Widget _buildSubmitButton() {
-    return FilledButton(
-      onPressed: _isLoading ? null : _handleLogin,
-      child: _isLoading
-          ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-            )
-          : const Text('Giriş Yap'),
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton(
+        onPressed: _isLoading ? null : _handleLogin,
+        child: _isLoading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+              )
+            : const Text('Giriş Yap'),
+      ),
     );
   }
 
+  /// Giriş formunu doğrulayıp oturum açan fonksiyon
   Future<void> _handleLogin() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
     await authController.login(_emailController.text, _passwordController.text);
     if (!mounted) return;
     setState(() => _isLoading = false);
+    // Ana kabuk ekranına yönlendir ve giriş ekranlarını yığından temizle
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => const MainShellView()),

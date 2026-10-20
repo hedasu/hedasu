@@ -4,6 +4,11 @@ import '../../support/view/live_support_dialog.dart';
 import '../../delivery/view/delivery_check_view.dart';
 import '../../../core/widgets/status_badge.dart';
 
+/// Aktif Kiralama Durum Kartı (ActiveRentalCard)
+///
+/// Kullanıcının şu anda devam eden bir araç kiralaması varsa ana sayfanın en üstünde
+/// lüks bir çerçeve ile görüntülenir. Teslim tarihi, canlı destek, süre uzatma
+/// ve teslimat kontrol adımlarına tek tıkla erişim imkanı sağlar.
 class ActiveRentalCard extends StatelessWidget {
   const ActiveRentalCard({super.key});
 
@@ -13,6 +18,7 @@ class ActiveRentalCard extends StatelessWidget {
       listenable: reservationController,
       builder: (context, _) {
         final active = reservationController.activeRental;
+        // Devam eden kiralama yoksa hiçbir şey gösterme
         if (active == null) return const SizedBox.shrink();
 
         return Container(
@@ -29,10 +35,13 @@ class ActiveRentalCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Üst rozet ve planlanan teslim tarihi
               _buildTopBadgeRow(context, active),
               const SizedBox(height: 10),
+              // Araç küçük resmi, adı ve teslim alma lokasyonu
               _buildVehicleInfo(context, active),
               const SizedBox(height: 14),
+              // Canlı Destek, Süre Uzat ve Teslim Et butonları
               _buildActionsRow(context, active),
             ],
           ),
@@ -41,6 +50,7 @@ class ActiveRentalCard extends StatelessWidget {
     );
   }
 
+  /// 'Aktif Kiralamanız' yeşil rozeti ve teslim zamanı satırı
   Widget _buildTopBadgeRow(BuildContext context, dynamic active) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,6 +73,7 @@ class ActiveRentalCard extends StatelessWidget {
     );
   }
 
+  /// Araç fotoğrafı ve model ismi satırı
   Widget _buildVehicleInfo(BuildContext context, dynamic active) {
     final theme = Theme.of(context);
     return Row(
@@ -107,6 +118,7 @@ class ActiveRentalCard extends StatelessWidget {
     );
   }
 
+  /// Aktif kiralama yönetim aksiyonları (Canlı Destek, Süre Uzat, Teslim Et)
   Widget _buildActionsRow(BuildContext context, dynamic active) {
     return Row(
       children: [
@@ -146,6 +158,7 @@ class ActiveRentalCard extends StatelessWidget {
     );
   }
 
+  /// Kiralama süresini 1 gün uzatma onay diyaloğu
   void _showExtendDialog(BuildContext context, dynamic active) {
     showDialog(
       context: context,
@@ -175,6 +188,7 @@ class ActiveRentalCard extends StatelessWidget {
     );
   }
 
+  /// Tarih ve saat biçimlendirici (GG.AA SS:DD)
   String _formatDate(DateTime dt) {
     return '${dt.day}.${dt.month.toString().padLeft(2, '0')} ${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
   }

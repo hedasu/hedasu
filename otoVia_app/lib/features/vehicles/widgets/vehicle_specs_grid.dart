@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import '../models/vehicle_model.dart';
 
+/// Araç Teknik Özellikleri Izgara Bileşeni (VehicleSpecsGrid)
+///
+/// Araç detay sayfasında model yılı, yakıt türü, vites, yolcu kapasitesi,
+/// bagaj hacmi ve gereken ehliyet sınıfı gibi temel teknik verileri
+/// 2 satır x 3 sütun halinde ikonlu ve şık bir kart içerisinde sunar.
 class VehicleSpecsGrid extends StatelessWidget {
   const VehicleSpecsGrid({super.key, required this.vehicle});
 
+  /// Özellikleri görüntülenecek araç
   final VehicleModel vehicle;
 
   @override
@@ -17,6 +23,7 @@ class VehicleSpecsGrid extends StatelessWidget {
       ),
       child: Column(
         children: [
+          // 1. Satır: Model Yılı, Yakıt Türü, Vites Türü
           Row(
             children: [
               _buildSpecTile(context, Icons.speed, 'Model Yılı', '${vehicle.year}'),
@@ -25,6 +32,7 @@ class VehicleSpecsGrid extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
+          // 2. Satır: Yolcu Kapasitesi, Bagaj Hacmi, Gerekli Ehliyet
           Row(
             children: [
               _buildSpecTile(context, Icons.people_outline, 'Kapasite', '${vehicle.passengerCapacity} Kişi'),
@@ -37,6 +45,7 @@ class VehicleSpecsGrid extends StatelessWidget {
     );
   }
 
+  /// Tek bir teknik özellik kutucuğunu (ikon, etiket, değer) inşa eden yardımcı metot
   Widget _buildSpecTile(BuildContext context, IconData icon, String label, String value) {
     final theme = Theme.of(context);
     return Expanded(

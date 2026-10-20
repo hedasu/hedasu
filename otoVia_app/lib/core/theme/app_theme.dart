@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
+/// otoVia Tema Yapılandırması (Material Design 3)
+///
+/// Lüks, minimalist ve monokrom estetik prensiplerine uygun olarak
+/// Aydınlık (Ivory White) ve Karanlık (Obsidian Luxury) temalarını üretir.
 abstract final class AppTheme {
+  /// Aydınlık Tema (Ivory White)
+  /// Kırık fildişi zemin, saf beyaz kartlar ve antrasit tipografi ile minimal lüks hissi verir.
   static ThemeData get lightTheme {
     final ColorScheme colorScheme = ColorScheme(
       brightness: Brightness.light,
@@ -26,6 +32,8 @@ abstract final class AppTheme {
     );
   }
 
+  /// Karanlık Tema (Obsidian Luxury)
+  /// Obsidyen siyahı zemin, grafit kartlar, şampanya altın vurgular ile seçkin bir deneyim sunar.
   static ThemeData get darkTheme {
     final ColorScheme colorScheme = ColorScheme(
       brightness: Brightness.dark,
@@ -50,6 +58,7 @@ abstract final class AppTheme {
     );
   }
 
+  /// Ortak tema özelliklerini ve Material 3 bileşen stillerini inşa eden yardımcı metot
   static ThemeData _buildTheme({
     required ColorScheme colorScheme,
     required Color scaffoldBg,
@@ -59,6 +68,8 @@ abstract final class AppTheme {
       useMaterial3: true,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: scaffoldBg,
+
+      // Üst Uygulama Çubuğu (AppBar) Stili
       appBarTheme: AppBarTheme(
         backgroundColor: scaffoldBg,
         foregroundColor: colorScheme.onSurface,
@@ -72,6 +83,8 @@ abstract final class AppTheme {
           color: colorScheme.onSurface,
         ),
       ),
+
+      // Kart (Card) Bileşen Stili
       cardTheme: CardThemeData(
         color: colorScheme.surface,
         elevation: 0,
@@ -81,11 +94,14 @@ abstract final class AppTheme {
         ),
         margin: EdgeInsets.zero,
       ),
+
+      // Dolgulu Buton (FilledButton) Stili
+      // Not: minimumSize genişliği 0 verilerek Row ve Dialog içinde taşma veya sonsuz genişlik hatası önlenmiştir.
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: colorScheme.primary,
           foregroundColor: colorScheme.onPrimary,
-          minimumSize: const Size(double.infinity, 48),
+          minimumSize: const Size(0, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -96,10 +112,12 @@ abstract final class AppTheme {
           ),
         ),
       ),
+
+      // Çerçeveli Buton (OutlinedButton) Stili
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: colorScheme.onSurface,
-          minimumSize: const Size(double.infinity, 48),
+          minimumSize: const Size(0, 48),
           side: BorderSide(color: colorScheme.outline, width: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -110,6 +128,8 @@ abstract final class AppTheme {
           ),
         ),
       ),
+
+      // Metin Giriş Alanları (TextField / InputDecoration) Stili
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: colorScheme.surface,
@@ -139,6 +159,8 @@ abstract final class AppTheme {
           fontSize: 14,
         ),
       ),
+
+      // Alt Gezinme Çubuğu (NavigationBar) Stili
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: colorScheme.surface,
         elevation: 0,
@@ -160,6 +182,8 @@ abstract final class AppTheme {
           );
         }),
       ),
+
+      // Filtre ve Kategori Çipleri (FilterChip / Chip) Stili
       chipTheme: ChipThemeData(
         backgroundColor: colorScheme.surface,
         selectedColor: colorScheme.primary,
@@ -172,6 +196,8 @@ abstract final class AppTheme {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       ),
+
+      // Ayırıcı Çizgi (Divider) Stili
       dividerTheme: DividerThemeData(
         color: colorScheme.outline,
         thickness: 1,
