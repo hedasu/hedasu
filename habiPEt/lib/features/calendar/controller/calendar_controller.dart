@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../../core/extensions/date_extensions.dart';
 import '../models/calendar_day_model.dart';
 import '../../habits/models/habit_model.dart';
 import '../../badges/models/badge_model.dart';
 
+enum CalendarViewMode { monthly, weekly, agenda }
+
 class CalendarController extends ChangeNotifier {
   late DateTime _selectedDate;
   late DateTime _displayedMonth;
+  CalendarViewMode _viewMode = CalendarViewMode.monthly;
 
   CalendarController() {
     final now = DateTime.now();
@@ -15,9 +19,20 @@ class CalendarController extends ChangeNotifier {
 
   DateTime get selectedDate => _selectedDate;
   DateTime get displayedMonth => _displayedMonth;
+  CalendarViewMode get viewMode => _viewMode;
+
+  void setViewMode(CalendarViewMode mode) {
+    if (_viewMode != mode) {
+      _viewMode = mode;
+      notifyListeners();
+    }
+  }
 
   void selectDate(DateTime date) {
     _selectedDate = DateTime(date.year, date.month, date.day);
+    if (_displayedMonth.month != date.month || _displayedMonth.year != date.year) {
+      _displayedMonth = DateTime(date.year, date.month, 1);
+    }
     notifyListeners();
   }
 
@@ -29,6 +44,26 @@ class CalendarController extends ChangeNotifier {
   void nextMonth() {
     _displayedMonth = DateTime(_displayedMonth.year, _displayedMonth.month + 1, 1);
     notifyListeners();
+  }
+
+  void previousPeriod() {
+    if (_viewMode == CalendarViewMode.weekly) {
+      _selectedDate = _selectedDate.subtract(const Duration(days: 7));
+      _displayedMonth = DateTime(_selectedDate.year, _selectedDate.month, 1);
+      notifyListeners();
+    } else {
+      previousMonth();
+    }
+  }
+
+  void nextPeriod() {
+    if (_viewMode == CalendarViewMode.weekly) {
+      _selectedDate = _selectedDate.add(const Duration(days: 7));
+      _displayedMonth = DateTime(_selectedDate.year, _selectedDate.month, 1);
+      notifyListeners();
+    } else {
+      nextMonth();
+    }
   }
 
   List<CalendarDayModel> generateMonthDays({
@@ -66,6 +101,41 @@ class CalendarController extends ChangeNotifier {
     }
 
     return dayModels;
+  }
+
+  List<CalendarDayModel> generateWeekDays({
+    required List<HabitModel> habits,
+    required List<BadgeModel> badges,
+  }) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final mondayOffset = _selectedDate.weekday - 1;
+    final monday = _selectedDate.subtract(Duration(days: mondayOffset));
+
+    return List.generate(7, (index) {
+      final date = monday.add(Duration(days: index));
+      final isCurrentMonth = date.month == _displayedMonth.month;
+      return _buildDayModel(date, isCurrentMonth, today, habits, badges);
+    });
+  }
+
+  List<CalendarDayModel> generateAgendaDays({
+    required List<HabitModel> habits,
+    required List<BadgeModel> badges,
+  }) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final daysInMonth = DateTime(_displayedMonth.year, _displayedMonth.month + 1, 0).day;
+
+    final List<CalendarDayModel> agendaDays = [];
+    for (int day = 1; day <= daysInMonth; day++) {
+      final date = DateTime(_displayedMonth.year, _displayedMonth.month, day);
+      final model = _buildDayModel(date, true, today, habits, badges);
+      if (model.hasActivity || model.isToday || date.isSameDay(_selectedDate)) {
+        agendaDays.add(model);
+      }
+    }
+    return agendaDays;
   }
 
   CalendarDayModel _buildDayModel(

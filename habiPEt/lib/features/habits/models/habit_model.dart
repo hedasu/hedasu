@@ -11,6 +11,7 @@ class HabitModel {
   final int currentStreak;
   final int bestStreak;
   final List<DateTime> completedDates;
+  final bool isArchived;
 
   const HabitModel({
     required this.id,
@@ -23,6 +24,7 @@ class HabitModel {
     this.currentStreak = 0,
     this.bestStreak = 0,
     this.completedDates = const [],
+    this.isArchived = false,
   });
 
   bool isCompletedOnDate(DateTime date) {
@@ -63,6 +65,7 @@ class HabitModel {
     int? currentStreak,
     int? bestStreak,
     List<DateTime>? completedDates,
+    bool? isArchived,
   }) {
     return HabitModel(
       id: id ?? this.id,
@@ -75,6 +78,7 @@ class HabitModel {
       currentStreak: currentStreak ?? this.currentStreak,
       bestStreak: bestStreak ?? this.bestStreak,
       completedDates: completedDates ?? this.completedDates,
+      isArchived: isArchived ?? this.isArchived,
     );
   }
 }

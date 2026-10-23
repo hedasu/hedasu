@@ -6,6 +6,7 @@ import '../../../core/extensions/context_extensions.dart';
 import '../widgets/welcome_dialog.dart';
 import '../widgets/pet_preview_card.dart';
 import '../widgets/habit_summary_card.dart';
+import '../../../core/widgets/app_logo.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -46,14 +47,18 @@ class _HomeViewState extends State<HomeView> {
 
     final food = cupboardCtrl.consumeFood(foodId);
     if (food != null) {
-      final leveledUp = petCtrl.feedPet(
+      final result = petCtrl.feedPet(
         satietyBoost: food.satietyBoost,
         expBoost: food.expBoost,
       );
 
-      if (leveledUp) {
+      if (result.stageEvolved) {
         context.showAppSnackBar(
-          '🎉 Tebrikler! ${petCtrl.pet.name} Seviye ${petCtrl.pet.level}\'e yükseldi!',
+          '🌟 EVRİM! ${petCtrl.pet.name} artık ${result.newStage.displayName} aşamasına geçti!',
+        );
+      } else if (result.leveledUp) {
+        context.showAppSnackBar(
+          '🎉 Tebrikler! ${petCtrl.pet.name} Seviye ${result.newLevel}\'e yükseldi!',
         );
       } else {
         context.showAppSnackBar(
@@ -116,6 +121,20 @@ class _HomeViewState extends State<HomeView> {
                     badgeCtrl.syncProgressWithHabits(
                       habits: habitCtrl.habits,
                     );
+                    final habit =
+                        habitCtrl.habits.firstWhere((h) => h.id == id);
+                    if (habit.isCompletedToday) {
+                      final result = petCtrl.addExp(25);
+                      if (result.stageEvolved) {
+                        context.showAppSnackBar(
+                          '🌟 EVRİM! ${petCtrl.pet.name} artık ${result.newStage.displayName} aşamasına evrildi!',
+                        );
+                      } else if (result.leveledUp) {
+                        context.showAppSnackBar(
+                          '🎉 ${petCtrl.pet.name} Seviye ${result.newLevel}\'e ulaştı! (+25 XP)',
+                        );
+                      }
+                    }
                   },
                   onAddHabit: () =>
                       Navigator.of(context).pushNamed(AppRouter.addHabitRoute),
@@ -156,7 +175,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: const Row(
         children: [
-          Text('🐾', style: TextStyle(fontSize: 22)),
+          AppLogo(size: 26),
           SizedBox(width: 8),
           Text(
             'habiPEt',

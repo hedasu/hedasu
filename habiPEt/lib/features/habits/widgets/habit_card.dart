@@ -6,12 +6,14 @@ class HabitCard extends StatelessWidget {
   final HabitModel habit;
   final VoidCallback onToggle;
   final VoidCallback? onDelete;
+  final VoidCallback? onLongPress;
 
   const HabitCard({
     super.key,
     required this.habit,
     required this.onToggle,
     this.onDelete,
+    this.onLongPress,
   });
 
   @override
@@ -22,6 +24,7 @@ class HabitCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
         onTap: onToggle,
+        onLongPress: onLongPress ?? onDelete,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -93,7 +96,7 @@ class _HabitInfoColumn extends StatelessWidget {
               const SizedBox(width: 6),
               _StreakBadge(streak: habit.currentStreak),
               const SizedBox(width: 4),
-              _DayBadge(day: habit.currentStreak),
+              _DayBadge(day: habit.currentStreak, habit: habit),
             ],
           ),
           const SizedBox(height: 3),
@@ -116,17 +119,24 @@ class _HabitInfoColumn extends StatelessWidget {
 
 class _DayBadge extends StatelessWidget {
   final int day;
+  final HabitModel? habit;
 
-  const _DayBadge({required this.day});
+  const _DayBadge({required this.day, this.habit});
 
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final tagBg = habit != null
+        ? AppColors.getHabitTagBackground(habit!.id, habit!.color)
+        : primaryColor.withValues(alpha: 0.18);
+    final textColor = habit != null
+        ? AppColors.getHabitTextAndIconColor(habit!.id, habit!.color)
+        : primaryColor;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: primaryColor.withValues(alpha: 0.18),
+        color: tagBg,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
@@ -134,7 +144,7 @@ class _DayBadge extends StatelessWidget {
         style: TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w800,
-          color: primaryColor,
+          color: textColor,
         ),
       ),
     );

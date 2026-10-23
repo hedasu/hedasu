@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/app_scope.dart';
 import '../../../core/router/app_router.dart';
-import '../widgets/pet_character.dart';
+import '../models/pet_model.dart';
+import '../widgets/home_pet_widget.dart';
 import '../widgets/pet_level_indicator.dart';
 import '../widgets/pet_age_indicator.dart';
 
@@ -55,7 +56,7 @@ class PetDetailView extends StatelessWidget {
 }
 
 class _PetHeroSection extends StatelessWidget {
-  final dynamic pet;
+  final PetModel pet;
 
   const _PetHeroSection({required this.pet});
 
@@ -63,7 +64,11 @@ class _PetHeroSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        PetCharacter(type: pet.type, size: 160, isHappy: true),
+        HomePetWidget(
+          pet: pet,
+          size: 170,
+          showStageBadge: true,
+        ),
         const SizedBox(height: 12),
         Text(
           pet.name,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../habits/models/habit_model.dart';
+import '../../../core/constants/app_colors.dart';
 
 class HabitSummaryCard extends StatelessWidget {
   final List<HabitModel> habits;
@@ -108,6 +109,7 @@ class _HabitsCompactList extends StatelessWidget {
                     _SummaryDayBadge(
                       day: habit.currentStreak,
                       color: habit.color,
+                      habitId: habit.id,
                     ),
                   ],
                 ),
@@ -142,15 +144,27 @@ class _HabitsCompactList extends StatelessWidget {
 class _SummaryDayBadge extends StatelessWidget {
   final int day;
   final Color color;
+  final String? habitId;
 
-  const _SummaryDayBadge({required this.day, required this.color});
+  const _SummaryDayBadge({
+    required this.day,
+    required this.color,
+    this.habitId,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final tagBg = habitId != null
+        ? AppColors.getHabitTagBackground(habitId!, color)
+        : color.withValues(alpha: 0.15);
+    final textColor = habitId != null
+        ? AppColors.getHabitTextAndIconColor(habitId!, color)
+        : color;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
+        color: tagBg,
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
@@ -158,7 +172,7 @@ class _SummaryDayBadge extends StatelessWidget {
         style: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.w800,
-          color: color,
+          color: textColor,
         ),
       ),
     );

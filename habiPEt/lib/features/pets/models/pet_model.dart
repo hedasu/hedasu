@@ -1,3 +1,5 @@
+import 'pet_growth_stage.dart';
+
 enum PetType {
   cat,
   dog,
@@ -95,6 +97,42 @@ class PetModel {
     this.satiety = 75,
     required this.appStartDate,
   });
+
+  /// Current growth phase of the pet
+  PetGrowthStage get growthStage => PetGrowthStage.fromLevel(level);
+
+  /// Progress (0.0 - 1.0) towards advancing to the next growth phase
+  double get stageProgress {
+    switch (growthStage) {
+      case PetGrowthStage.baby:
+        return ((level - 1) / 4.0).clamp(0.0, 1.0);
+      case PetGrowthStage.junior:
+        return ((level - 5) / 5.0).clamp(0.0, 1.0);
+      case PetGrowthStage.teen:
+        return ((level - 10) / 10.0).clamp(0.0, 1.0);
+      case PetGrowthStage.adult:
+        return 1.0;
+    }
+  }
+
+  int get levelsUntilNextStage {
+    final nextLvl = growthStage.nextStageLevel;
+    if (nextLvl == null) return 0;
+    return (nextLvl - level).clamp(0, 999);
+  }
+
+  String get stageDescription {
+    switch (growthStage) {
+      case PetGrowthStage.baby:
+        return 'Yavru $name dünyayı merakla keşfediyor ve seninle büyüyor!';
+      case PetGrowthStage.junior:
+        return 'Genç $name hedeflerine enerji ve neşeyle koşuyor!';
+      case PetGrowthStage.teen:
+        return 'Gelişkin $name sarsılmaz bir irade ve odaklanma sergiliyor!';
+      case PetGrowthStage.adult:
+        return 'Efsanevi $name alışkanlıklarının kadim ve kudretli ustası oldu!';
+    }
+  }
 
   /// Age is determined by the user's app usage duration
   int get ageInDays {

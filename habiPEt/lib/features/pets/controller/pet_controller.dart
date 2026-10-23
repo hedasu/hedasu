@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
 import '../models/pet_model.dart';
+import '../models/pet_growth_stage.dart';
 import '../repository/pet_repository.dart';
+
+class PetLevelUpResult {
+  final bool leveledUp;
+  final bool stageEvolved;
+  final PetGrowthStage newStage;
+  final int newLevel;
+
+  const PetLevelUpResult({
+    required this.leveledUp,
+    required this.stageEvolved,
+    required this.newStage,
+    required this.newLevel,
+  });
+}
 
 class PetController extends ChangeNotifier {
   final PetRepository _repository;
@@ -25,13 +40,13 @@ class PetController extends ChangeNotifier {
     if (_pet.type == newType) return;
     _pet = _pet.copyWith(
       type: newType,
-      // Retains level, currentExp, maxExp, satiety, and appStartDate
     );
     notifyListeners();
   }
 
-  /// Feed pet with satiety and exp boost; handles level up
-  bool feedPet({required int satietyBoost, required int expBoost}) {
+  /// Feed pet with satiety and exp boost; handles level up and stage evolution
+  PetLevelUpResult feedPet({required int satietyBoost, required int expBoost}) {
+    final oldStage = _pet.growthStage;
     int newSatiety = (_pet.satiety + satietyBoost).clamp(0, 100);
     int newExp = _pet.currentExp + expBoost;
     int newLevel = _pet.level;
@@ -52,7 +67,27 @@ class PetController extends ChangeNotifier {
       maxExp: newMaxExp,
     );
 
+    final stageEvolved = leveledUp && (_pet.growthStage != oldStage);
+
     notifyListeners();
-    return leveledUp;
+    return PetLevelUpResult(
+      leveledUp: leveledUp,
+      stageEvolved: stageEvolved,
+      newStage: _pet.growthStage,
+      newLevel: newLevel,
+    );
+  }
+
+  /// Add experience directly (e.g., when completing a habit)
+  PetLevelUpResult addExp(int expBoost) {
+    return feedPet(satietyBoost: 2, expBoost: expBoost);
+  }
+
+  /// Triggered when the user taps or pets the animal
+  void petTapped() {
+    int newSatiety = (_pet.satiety + 1).clamp(0, 100);
+    _pet = _pet.copyWith(satiety: newSatiety);
+    notifyListeners();
   }
 }
+

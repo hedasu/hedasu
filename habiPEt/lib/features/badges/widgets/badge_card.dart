@@ -5,37 +5,59 @@ import '../../../core/constants/app_colors.dart';
 class BadgeCard extends StatelessWidget {
   final BadgeModel badge;
   final VoidCallback onTap;
+  final bool isDark;
 
   const BadgeCard({
     super.key,
     required this.badge,
     required this.onTap,
+    this.isDark = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final isUnlocked = badge.isUnlocked;
-    final categoryColor = badge.category.categoryColor;
+    final cardBg = isDark
+        ? AppColors.badgeCardBackgroundDark
+        : AppColors.badgeCardBackground;
+    final cardBorder =
+        isDark ? AppColors.badgeCardBorderDark : AppColors.badgeCardBorder;
 
-    return Card(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _BadgeIconCircle(
-                badge: badge,
-                isUnlocked: isUnlocked,
-                categoryColor: categoryColor,
-              ),
-              const SizedBox(height: 8),
-              _BadgeTitleText(title: badge.title, isUnlocked: isUnlocked),
-              const SizedBox(height: 4),
-              _BadgeBottomStatus(badge: badge, isUnlocked: isUnlocked),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: cardBorder, width: 1),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _BadgeIconCircle(
+                  badge: badge,
+                  isUnlocked: isUnlocked,
+                  isDark: isDark,
+                ),
+                const SizedBox(height: 8),
+                _BadgeTitleText(
+                  title: badge.title,
+                  isUnlocked: isUnlocked,
+                  isDark: isDark,
+                ),
+                const SizedBox(height: 4),
+                _BadgeBottomStatus(
+                  badge: badge,
+                  isUnlocked: isUnlocked,
+                  isDark: isDark,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -46,41 +68,65 @@ class BadgeCard extends StatelessWidget {
 class _BadgeIconCircle extends StatelessWidget {
   final BadgeModel badge;
   final bool isUnlocked;
-  final Color categoryColor;
+  final bool isDark;
 
   const _BadgeIconCircle({
     required this.badge,
     required this.isUnlocked,
-    required this.categoryColor,
+    required this.isDark,
   });
 
   @override
   Widget build(BuildContext context) {
+    final Color bgColor;
+    final Color borderColor;
+    final Color iconColor;
+
+    if (isUnlocked) {
+      bgColor = isDark
+          ? AppColors.badgeUnlockedIconBgDark
+          : AppColors.badgeUnlockedIconBg;
+      borderColor = isDark
+          ? AppColors.badgeUnlockedIconBorderDark
+          : AppColors.badgeUnlockedIconBorder;
+      iconColor = isDark
+          ? AppColors.badgeUnlockedIconColorDark
+          : AppColors.badgeUnlockedIconColor;
+    } else {
+      bgColor = isDark
+          ? AppColors.badgeLockedIconBgDark
+          : AppColors.badgeLockedIconBg;
+      borderColor = isDark
+          ? AppColors.badgeLockedIconBorderDark
+          : AppColors.badgeLockedIconBorder;
+      iconColor = isDark
+          ? AppColors.badgeLockedIconColorDark
+          : AppColors.badgeLockedIconColor;
+    }
+
     return Container(
-      width: 52,
-      height: 52,
+      width: 48,
+      height: 48,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isUnlocked
-            ? categoryColor.withValues(alpha: 0.2)
-            : Theme.of(context).colorScheme.surfaceContainerHighest,
-        border: Border.all(
-          color: isUnlocked ? categoryColor : Colors.grey.withValues(alpha: 0.3),
-          width: 2,
-        ),
+        color: bgColor,
+        border: Border.all(color: borderColor, width: 1.8),
         boxShadow: [
           if (isUnlocked)
             BoxShadow(
-              color: categoryColor.withValues(alpha: 0.35),
-              blurRadius: 10,
+              color: (isDark
+                      ? AppColors.badgeUnlockedGlowDark
+                      : AppColors.badgeUnlockedGlow)
+                  .withValues(alpha: isDark ? 0.25 : 0.35),
+              blurRadius: 8,
               spreadRadius: 1,
             ),
         ],
       ),
       child: Icon(
         isUnlocked ? badge.icon : Icons.lock_outline_rounded,
-        color: isUnlocked ? categoryColor : Colors.grey,
-        size: 26,
+        color: iconColor,
+        size: 24,
       ),
     );
   }
@@ -89,20 +135,36 @@ class _BadgeIconCircle extends StatelessWidget {
 class _BadgeTitleText extends StatelessWidget {
   final String title;
   final bool isUnlocked;
+  final bool isDark;
 
-  const _BadgeTitleText({required this.title, required this.isUnlocked});
+  const _BadgeTitleText({
+    required this.title,
+    required this.isUnlocked,
+    required this.isDark,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final Color textColor;
+    if (isUnlocked) {
+      textColor = isDark
+          ? AppColors.badgeUnlockedTitleDark
+          : AppColors.badgeUnlockedTitle;
+    } else {
+      textColor = isDark
+          ? AppColors.badgeLockedTitleDark
+          : AppColors.badgeLockedTitle;
+    }
+
     return Text(
       title,
       textAlign: TextAlign.center,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 13,
-        fontWeight: isUnlocked ? FontWeight.w700 : FontWeight.w500,
-        color: isUnlocked ? null : Theme.of(context).textTheme.bodySmall?.color,
+        fontSize: 12.5,
+        fontWeight: isUnlocked ? FontWeight.w700 : FontWeight.w600,
+        color: textColor,
       ),
     );
   }
@@ -111,50 +173,74 @@ class _BadgeTitleText extends StatelessWidget {
 class _BadgeBottomStatus extends StatelessWidget {
   final BadgeModel badge;
   final bool isUnlocked;
+  final bool isDark;
 
-  const _BadgeBottomStatus({required this.badge, required this.isUnlocked});
+  const _BadgeBottomStatus({
+    required this.badge,
+    required this.isUnlocked,
+    required this.isDark,
+  });
 
   @override
   Widget build(BuildContext context) {
     if (isUnlocked) {
+      final tagBg = isDark
+          ? AppColors.badgeRewardTagBgDark
+          : AppColors.badgeRewardTagBg;
+      final tagText = isDark
+          ? AppColors.badgeRewardTagTextDark
+          : AppColors.badgeRewardTagText;
+
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
         decoration: BoxDecoration(
-          color: AppColors.accentGold.withValues(alpha: 0.15),
+          color: tagBg,
           borderRadius: BorderRadius.circular(6),
         ),
         child: Text(
           '+${badge.rewardCoins} Rozet',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w700,
-            color: AppColors.accentGold,
+            color: tagText,
           ),
         ),
       );
     }
 
-    return Column(
-      children: [
-        Text(
-          badge.progressText,
-          style: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w700,
-            color: Theme.of(context).textTheme.bodySmall?.color,
+    final countColor = isDark
+        ? AppColors.badgeProgressCountDark
+        : AppColors.badgeProgressCount;
+    final progressBg = isDark
+        ? AppColors.badgeProgressInactiveDark
+        : AppColors.badgeProgressInactive;
+
+    return SizedBox(
+      width: 90,
+      child: Column(
+        children: [
+          Text(
+            badge.progressText,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              color: countColor,
+            ),
           ),
-        ),
-        const SizedBox(height: 3),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(
-            value: badge.progressRatio,
-            minHeight: 4,
-            backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-            valueColor: AlwaysStoppedAnimation<Color>(badge.category.categoryColor),
+          const SizedBox(height: 2.5),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: LinearProgressIndicator(
+              value: badge.progressRatio,
+              minHeight: 3,
+              backgroundColor: progressBg,
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                AppColors.badgeProgressActive,
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

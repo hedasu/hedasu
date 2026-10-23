@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../pets/models/pet_model.dart';
-import '../../pets/widgets/pet_character.dart';
+import '../../pets/widgets/home_pet_widget.dart';
 import '../../pets/widgets/pet_level_indicator.dart';
 import '../../pets/widgets/pet_age_indicator.dart';
 import '../../cupboard/models/cupboard_item_model.dart';
@@ -34,9 +34,13 @@ class PetPreviewCard extends StatelessWidget {
         child: Column(
           children: [
             _PetTopRow(pet: pet, onChangePet: onChangePet),
-            const SizedBox(height: 12),
-            PetCharacter(type: pet.type, size: 130, isHappy: pet.satiety > 70),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
+            HomePetWidget(
+              pet: pet,
+              size: 160,
+              showStageBadge: true,
+            ),
+            const SizedBox(height: 14),
             PetLevelIndicator(
               level: pet.level,
               currentExp: pet.currentExp,

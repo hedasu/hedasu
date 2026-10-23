@@ -11,23 +11,29 @@ class HabitController extends ChangeNotifier {
     _habits = _repository.getPreloadedHabits();
   }
 
-  List<HabitModel> get habits => List.unmodifiable(_habits);
-  int get habitCount => _habits.length;
+  /// Aktif (silinmemiş) alışkanlıklar - Alışkanlıklarım, Bugünün Görevleri ve sayaçlar için
+  List<HabitModel> get habits =>
+      List.unmodifiable(_habits.where((h) => !h.isArchived).toList());
+
+  /// Tüm alışkanlıklar ve geçmiş tamamlanma kayıtları (Silinenlerin geçmişi dahil) - Takvim ve Ajanda için
+  List<HabitModel> get allHabitsWithHistory => List.unmodifiable(_habits);
+
+  int get habitCount => habits.length;
 
   int get maxStreak {
-    if (_habits.isEmpty) return 0;
-    return _habits
+    if (habits.isEmpty) return 0;
+    return habits
         .map((h) => h.currentStreak)
         .reduce((a, b) => a > b ? a : b);
   }
 
   int get completedTodayCount {
-    return _habits.where((h) => h.isCompletedToday).length;
+    return habits.where((h) => h.isCompletedToday).length;
   }
 
   double get todayProgress {
-    if (_habits.isEmpty) return 0.0;
-    return completedTodayCount / _habits.length;
+    if (habits.isEmpty) return 0.0;
+    return completedTodayCount / habits.length;
   }
 
   void addHabit({
@@ -84,8 +90,14 @@ class HabitController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Alışkanlığı siler: Aktif listelerden kaldırır ancak geçmiş günlerdeki takvim/ajanda kayıtlarını korur
   void deleteHabit(String habitId) {
-    _habits = _habits.where((h) => h.id != habitId).toList();
+    _habits = _habits.map((habit) {
+      if (habit.id == habitId) {
+        return habit.copyWith(isArchived: true);
+      }
+      return habit;
+    }).toList();
     notifyListeners();
   }
 }

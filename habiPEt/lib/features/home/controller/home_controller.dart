@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomeController extends ChangeNotifier {
-  bool _welcomeDialogShown = false;
+  bool _welcomeDialogShown = true;
 
   bool get welcomeDialogShown => _welcomeDialogShown;
 

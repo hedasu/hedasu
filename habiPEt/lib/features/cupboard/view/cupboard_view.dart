@@ -13,14 +13,18 @@ class CupboardView extends StatelessWidget {
 
     final food = cupboardCtrl.consumeFood(foodId);
     if (food != null) {
-      final leveledUp = petCtrl.feedPet(
+      final result = petCtrl.feedPet(
         satietyBoost: food.satietyBoost,
         expBoost: food.expBoost,
       );
 
-      if (leveledUp) {
+      if (result.stageEvolved) {
         context.showAppSnackBar(
-          '🎉 Tebrikler! ${petCtrl.pet.name} Seviye ${petCtrl.pet.level}\'e yükseldi!',
+          '🌟 EVRİM! ${petCtrl.pet.name} artık ${result.newStage.displayName} aşamasına geçti!',
+        );
+      } else if (result.leveledUp) {
+        context.showAppSnackBar(
+          '🎉 Tebrikler! ${petCtrl.pet.name} Seviye ${result.newLevel}\'e yükseldi!',
         );
       } else {
         context.showAppSnackBar(

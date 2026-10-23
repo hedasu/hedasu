@@ -1,16 +1,24 @@
+import 'dart:async';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import '../../../core/constants/app_colors.dart';
 import '../models/pet_model.dart';
+import '../models/pet_growth_stage.dart';
+import '../controller/pet_animation_controller.dart';
+import 'living_pet_painter.dart';
 
 class PetCharacter extends StatefulWidget {
   final PetType type;
   final double size;
   final bool isHappy;
+  final PetGrowthStage stage;
 
   const PetCharacter({
     super.key,
     required this.type,
     this.size = 140,
     this.isHappy = false,
+    this.stage = PetGrowthStage.baby,
   });
 
   @override
@@ -18,135 +26,85 @@ class PetCharacter extends StatefulWidget {
 }
 
 class _PetCharacterState extends State<PetCharacter>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
+    with TickerProviderStateMixin {
+  late final AnimationController _idleController;
+  late final AnimationController _blinkController;
+  late final Animation<double> _breathAnimation;
   late final Animation<double> _bounceAnimation;
+  late final Animation<double> _blinkAnimation;
+  Timer? _blinkTimer;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _idleController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1800),
+      duration: const Duration(milliseconds: 2000),
     )..repeat(reverse: true);
 
-    _bounceAnimation = Tween<double>(begin: -6.0, end: 6.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    _breathAnimation = CurvedAnimation(
+      parent: _idleController,
+      curve: Curves.easeInOutSine,
     );
+
+    _bounceAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _idleController, curve: Curves.easeInOutQuad),
+    );
+
+    _blinkController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 160),
+    );
+
+    _blinkAnimation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 45),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 55),
+    ]).animate(_blinkController);
+
+    _startBlinkTimer();
+  }
+
+  void _startBlinkTimer() {
+    _blinkTimer?.cancel();
+    final ms = 3000 + math.Random().nextInt(2000);
+    _blinkTimer = Timer(Duration(milliseconds: ms), () {
+      if (mounted) {
+        _blinkController.forward(from: 0.0);
+        _startBlinkTimer();
+      }
+    });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _blinkTimer?.cancel();
+    _idleController.dispose();
+    _blinkController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AnimatedBuilder(
-      animation: _bounceAnimation,
+      animation: Listenable.merge([_idleController, _blinkController]),
       builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(0, _bounceAnimation.value),
-          child: child,
+        return CustomPaint(
+          size: Size(widget.size, widget.size),
+          painter: LivingPetPainter(
+            petType: widget.type,
+            stage: widget.stage,
+            breathValue: _breathAnimation.value,
+            bounceValue: _bounceAnimation.value,
+            blinkValue: _blinkAnimation.value,
+            reactionValue: widget.isHappy ? 1.0 : 0.0,
+            mood: widget.isHappy ? PetMoodState.happy : PetMoodState.idle,
+            primaryColor: theme.colorScheme.primary,
+            accentColor: AppColors.accentGold,
+          ),
         );
       },
-      child: _PetGraphicContainer(
-        type: widget.type,
-        size: widget.size,
-        isHappy: widget.isHappy,
-      ),
-    );
-  }
-}
-
-class _PetGraphicContainer extends StatelessWidget {
-  final PetType type;
-  final double size;
-  final bool isHappy;
-
-  const _PetGraphicContainer({
-    required this.type,
-    required this.size,
-    required this.isHappy,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-
-    return Container(
-      width: size,
-      height: size,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: RadialGradient(
-          colors: [
-            primaryColor.withValues(alpha: 0.35),
-            Colors.transparent,
-          ],
-        ),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          _PetAvatarCircle(type: type, size: size * 0.8),
-          if (isHappy)
-            const Positioned(
-              top: 4,
-              right: 12,
-              child: Text('✨', style: TextStyle(fontSize: 22)),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PetAvatarCircle extends StatelessWidget {
-  final PetType type;
-  final double size;
-
-  const _PetAvatarCircle({
-    required this.type,
-    required this.size,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            scheme.primary.withValues(alpha: 0.25),
-            scheme.secondary.withValues(alpha: 0.15),
-          ],
-        ),
-        border: Border.all(
-          color: scheme.primary.withValues(alpha: 0.6),
-          width: 3,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: scheme.primary.withValues(alpha: 0.25),
-            blurRadius: 18,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        type.emoji,
-        style: TextStyle(fontSize: size * 0.52),
-      ),
     );
   }
 }

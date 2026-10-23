@@ -9,21 +9,25 @@ class CalendarHabitItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cardBg = AppColors.getHabitCardBackground(habit.id, habit.color);
+    final tagBg = AppColors.getHabitTagBackground(habit.id, habit.color);
+    final textIconColor = AppColors.getHabitTextAndIconColor(habit.id, habit.color);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: habit.color.withValues(alpha: 0.12),
+        color: cardBg,
         borderRadius: BorderRadius.circular(14),
         border: Border(
-          left: BorderSide(color: habit.color, width: 4),
+          left: BorderSide(color: textIconColor, width: 4),
         ),
       ),
       child: Row(
         children: [
           Icon(
             habit.icon,
-            color: habit.color,
+            color: textIconColor,
             size: 20,
           ),
           const SizedBox(width: 10),
@@ -38,7 +42,7 @@ class CalendarHabitItem extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color: habit.color,
+                      color: textIconColor,
                     ),
                   ),
                 ),
@@ -47,7 +51,7 @@ class CalendarHabitItem extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
-                    color: habit.color.withValues(alpha: 0.18),
+                    color: tagBg,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -55,16 +59,16 @@ class CalendarHabitItem extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
-                      color: habit.color,
+                      color: textIconColor,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const Icon(
+          Icon(
             Icons.check_circle_rounded,
-            color: AppColors.success,
+            color: textIconColor.withValues(alpha: 0.85),
             size: 18,
           ),
         ],

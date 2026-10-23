@@ -3,6 +3,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/app_scope.dart';
 import '../../../core/router/app_router.dart';
 import '../widgets/auth_text_field.dart';
+import '../../../core/widgets/app_logo.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -94,22 +95,20 @@ class _AuthHeaderSection extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 84,
-          height: 84,
+          width: 92,
+          height: 92,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: const LinearGradient(
-              colors: [AppColors.darkMint, AppColors.secondary],
-            ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.darkMint.withValues(alpha: 0.35),
-                blurRadius: 20,
+                color: AppColors.darkMint.withValues(alpha: 0.28),
+                blurRadius: 24,
+                spreadRadius: 2,
               ),
             ],
           ),
           alignment: Alignment.center,
-          child: const Text('🐾', style: TextStyle(fontSize: 40)),
+          child: const AppLogo(size: 92),
         ),
         const SizedBox(height: 16),
         const Text(
