@@ -31,7 +31,7 @@ abstract interface class StationContreact {
 
 
 
-| Özellik | implements | extends | with |
+| Özellik | extends | implements | with |
 |---|---|---|---|
 | Temel Felsefe| ben senin çocuğunum,genlerini alıyorum | seninle sözleşme imzaladım,maddeleri ben yapacağım. | ben ana sınıfıma ek bir uzmanlık yeteneği takıyorum |
 | gövdesi dolu metot gelir mi? |evet, üst sınıfın metotlarını doğrudan kullanır.| hayır! üst sınıfın içi dolu olsa bile hepsi silinir,sıfırdan yazılır. | evet, mixin içindeki hazır metotlar sınıfa eklenir |
