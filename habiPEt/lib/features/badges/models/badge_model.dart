@@ -6,6 +6,7 @@ enum BadgeCategory {
   weekly,
   monthly,
   yearly,
+  multiHabit,
   special;
 
   String get displayName {
@@ -18,21 +19,25 @@ enum BadgeCategory {
         return 'Aylık';
       case BadgeCategory.yearly:
         return 'Yıllık';
+      case BadgeCategory.multiHabit:
+        return 'Çoklu Alışkanlık';
       case BadgeCategory.special:
         return 'Özel Başarılar';
     }
   }
 
-  // Hierarchy ranking: Yıllık > Aylık > Haftalık > Günlük
+  // Hierarchy ranking: Yıllık > Aylık > Haftalık > Günlük > Çoklu Alışkanlık > Özel
   int get hierarchyWeight {
     switch (this) {
       case BadgeCategory.yearly:
-        return 5;
+        return 6;
       case BadgeCategory.monthly:
-        return 4;
+        return 5;
       case BadgeCategory.weekly:
-        return 3;
+        return 4;
       case BadgeCategory.daily:
+        return 3;
+      case BadgeCategory.multiHabit:
         return 2;
       case BadgeCategory.special:
         return 1;
@@ -49,6 +54,8 @@ enum BadgeCategory {
         return AppColors.badgeMonthly;
       case BadgeCategory.yearly:
         return AppColors.badgeYearly;
+      case BadgeCategory.multiHabit:
+        return AppColors.badgeMulti;
       case BadgeCategory.special:
         return AppColors.badgeSpecial;
     }
@@ -66,6 +73,8 @@ class BadgeModel {
   final IconData icon;
   final bool isUnlocked;
   final DateTime? unlockedDate;
+  final String? habitId;
+  final String? habitTitle;
 
   const BadgeModel({
     required this.id,
@@ -78,6 +87,8 @@ class BadgeModel {
     required this.icon,
     required this.isUnlocked,
     this.unlockedDate,
+    this.habitId,
+    this.habitTitle,
   });
 
   double get progressRatio => (currentDays / targetDays).clamp(0.0, 1.0);
@@ -94,6 +105,8 @@ class BadgeModel {
     IconData? icon,
     bool? isUnlocked,
     DateTime? unlockedDate,
+    String? habitId,
+    String? habitTitle,
   }) {
     return BadgeModel(
       id: id ?? this.id,
@@ -106,6 +119,8 @@ class BadgeModel {
       icon: icon ?? this.icon,
       isUnlocked: isUnlocked ?? this.isUnlocked,
       unlockedDate: unlockedDate ?? this.unlockedDate,
+      habitId: habitId ?? this.habitId,
+      habitTitle: habitTitle ?? this.habitTitle,
     );
   }
 }

@@ -114,8 +114,7 @@ class _HomeViewState extends State<HomeView> {
                   onToggleHabit: (id) {
                     habitCtrl.toggleHabitCompletion(id, DateTime.now());
                     badgeCtrl.syncProgressWithHabits(
-                      maxStreak: habitCtrl.maxStreak,
-                      habitCount: habitCtrl.habitCount,
+                      habits: habitCtrl.habits,
                     );
                   },
                   onAddHabit: () =>

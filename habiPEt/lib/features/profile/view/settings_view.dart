@@ -78,9 +78,11 @@ class _ThemeSettingsCard extends StatelessWidget {
       child: Column(
         children: [
           SettingsTile(
-            icon: Icons.dark_mode_rounded,
-            title: 'Koyu Tema (Gece Ormanı)',
-            subtitle: 'Dark navy ve mint yeşili vurgular',
+            icon: Icons.palette_rounded,
+            title: 'Koyu Tema (Sage & Cream)',
+            subtitle: isDarkMode
+                ? 'Sage & Cream Koyu Tema aktif'
+                : 'Sage & Cream Açık Tema aktif',
             trailing: Switch(
               value: isDarkMode,
               onChanged: (_) => onToggle(),

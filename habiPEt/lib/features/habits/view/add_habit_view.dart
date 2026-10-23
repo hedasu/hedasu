@@ -67,10 +67,9 @@ class _AddHabitViewState extends State<AddHabitView> {
       color: _selectedColor,
     );
 
-    // Sync badges (e.g. 2nd, 3rd, 5th habit special badges)
+    // Sync badges (multi-habit rewards & per-habit progress)
     badgeCtrl.syncProgressWithHabits(
-      maxStreak: habitCtrl.maxStreak,
-      habitCount: habitCtrl.habitCount,
+      habits: habitCtrl.habits,
     );
 
     context.showAppSnackBar('Yeni alışkanlığın eklendi! ✨');

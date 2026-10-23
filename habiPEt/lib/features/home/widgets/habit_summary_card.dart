@@ -87,16 +87,29 @@ class _HabitsCompactList extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: Text(
-                  habit.title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: isDone ? FontWeight.w500 : FontWeight.w700,
-                    decoration: isDone ? TextDecoration.lineThrough : null,
-                    color: isDone
-                        ? Theme.of(context).textTheme.bodySmall?.color
-                        : null,
-                  ),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        habit.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: isDone ? FontWeight.w500 : FontWeight.w700,
+                          decoration: isDone ? TextDecoration.lineThrough : null,
+                          color: isDone
+                              ? Theme.of(context).textTheme.bodySmall?.color
+                              : null,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    _SummaryDayBadge(
+                      day: habit.currentStreak,
+                      color: habit.color,
+                    ),
+                  ],
                 ),
               ),
               InkWell(
@@ -122,6 +135,32 @@ class _HabitsCompactList extends StatelessWidget {
           ),
         );
       }).toList(),
+    );
+  }
+}
+
+class _SummaryDayBadge extends StatelessWidget {
+  final int day;
+  final Color color;
+
+  const _SummaryDayBadge({required this.day, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        '$day. Gün',
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w800,
+          color: color,
+        ),
+      ),
     );
   }
 }

@@ -42,6 +42,7 @@ class SpecialBadge extends StatelessWidget {
           ],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _SpecialBadgeHeader(badge: badge),
             const SizedBox(height: 12),
@@ -97,9 +98,11 @@ class _SpecialBadgeHeader extends StatelessWidget {
                       color: AppColors.accentPink.withValues(alpha: 0.25),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text(
-                      'BİLİMSEL HEDEF',
-                      style: TextStyle(
+                    child: Text(
+                      badge.habitTitle != null
+                          ? 'HEDEF: ${badge.habitTitle!.toUpperCase()}'
+                          : 'BİLİMSEL HEDEF',
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w800,
                         color: AppColors.accentPink,
@@ -141,20 +144,16 @@ class _SpecialBadgeProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              badge.description,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 12,
-                color: Theme.of(context).textTheme.bodySmall?.color,
-              ),
-            ),
-          ],
+        Text(
+          badge.description,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 12,
+            color: Theme.of(context).textTheme.bodySmall?.color,
+          ),
         ),
         const SizedBox(height: 8),
         Row(

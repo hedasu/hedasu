@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/pet_model.dart';
-import '../../../core/constants/app_colors.dart';
 
 class PetCharacter extends StatefulWidget {
   final PetType type;
@@ -74,6 +73,8 @@ class _PetGraphicContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
     return Container(
       width: size,
       height: size,
@@ -82,7 +83,7 @@ class _PetGraphicContainer extends StatelessWidget {
         shape: BoxShape.circle,
         gradient: RadialGradient(
           colors: [
-            AppColors.darkMint.withValues(alpha: 0.35),
+            primaryColor.withValues(alpha: 0.35),
             Colors.transparent,
           ],
         ),
@@ -114,6 +115,8 @@ class _PetAvatarCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
     return Container(
       width: size,
       height: size,
@@ -123,17 +126,17 @@ class _PetAvatarCircle extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.darkMint.withValues(alpha: 0.25),
-            AppColors.secondary.withValues(alpha: 0.15),
+            scheme.primary.withValues(alpha: 0.25),
+            scheme.secondary.withValues(alpha: 0.15),
           ],
         ),
         border: Border.all(
-          color: AppColors.darkMint.withValues(alpha: 0.6),
+          color: scheme.primary.withValues(alpha: 0.6),
           width: 3,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.darkMint.withValues(alpha: 0.25),
+            color: scheme.primary.withValues(alpha: 0.25),
             blurRadius: 18,
             spreadRadius: 2,
           ),

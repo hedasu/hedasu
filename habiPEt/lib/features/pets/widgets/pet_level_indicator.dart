@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
 
 class PetLevelIndicator extends StatelessWidget {
   final int level;
@@ -41,6 +40,8 @@ class _LevelHeaderRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -49,16 +50,16 @@ class _LevelHeaderRow extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: AppColors.darkMint.withValues(alpha: 0.2),
+                color: primaryColor.withValues(alpha: 0.18),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.darkMint, width: 1),
+                border: Border.all(color: primaryColor, width: 1),
               ),
               child: Text(
                 'SV $level',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.darkMint,
+                  color: primaryColor,
                 ),
               ),
             ),
@@ -92,18 +93,20 @@ class _ProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Container(
         height: 8,
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        color: scheme.surfaceContainerHighest,
         child: FractionallySizedBox(
           alignment: Alignment.centerLeft,
           widthFactor: progress,
           child: Container(
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.darkMint, AppColors.secondary],
+              gradient: LinearGradient(
+                colors: [scheme.primary, scheme.secondary],
               ),
               borderRadius: BorderRadius.circular(10),
             ),

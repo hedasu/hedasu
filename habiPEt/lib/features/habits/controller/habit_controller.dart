@@ -45,9 +45,9 @@ class HabitController extends ChangeNotifier {
       icon: icon,
       color: color,
       startDate: DateTime.now(),
-      currentStreak: 1,
-      bestStreak: 1,
-      completedDates: [DateTime.now()],
+      currentStreak: 0,
+      bestStreak: 0,
+      completedDates: const [],
     );
 
     _habits = [..._habits, newHabit];

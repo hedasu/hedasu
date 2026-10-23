@@ -214,7 +214,7 @@ class _ProfileMenuCard extends StatelessWidget {
           SettingsTile(
             icon: Icons.palette_outlined,
             title: 'Tema (Koyu / Aydınlık)',
-            subtitle: isDarkMode ? 'Gece Ormanı' : 'Ferah Doğa',
+            subtitle: isDarkMode ? 'Sage & Cream Koyu' : 'Sage & Cream Açık',
             trailing: Switch(
               value: isDarkMode,
               onChanged: (_) => onToggleTheme(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/app_scope.dart';
+import '../../habits/models/habit_model.dart';
 import '../models/badge_model.dart';
 import '../widgets/badge_card.dart';
 import '../widgets/badge_progress.dart';
@@ -23,14 +24,12 @@ class BadgesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final badgeCtrl = AppScope.of(context).badgeController;
+    final habitCtrl = AppScope.of(context).habitController;
 
     return ListenableBuilder(
-      listenable: badgeCtrl,
+      listenable: Listenable.merge([badgeCtrl, habitCtrl]),
       builder: (context, _) {
-        final special21 = badgeCtrl.allBadges.firstWhere(
-          (b) => b.id == 'special_21_days',
-          orElse: () => badgeCtrl.allBadges.first,
-        );
+        final special21 = badgeCtrl.special21Badge;
 
         return Scaffold(
           appBar: AppBar(title: const Text('Başarı Rozetleri')),
@@ -42,6 +41,12 @@ class BadgesView extends StatelessWidget {
                   unlockedCount: badgeCtrl.unlockedCount,
                   totalCount: badgeCtrl.totalCount,
                   totalCoins: badgeCtrl.totalBadgeCoins,
+                ),
+                const SizedBox(height: 16),
+                _HabitSelectorFilterRow(
+                  habits: habitCtrl.habits,
+                  selectedHabitId: badgeCtrl.selectedHabitId,
+                  onSelect: (habitId) => badgeCtrl.selectHabit(habitId),
                 ),
                 const SizedBox(height: 16),
                 SpecialBadge(
@@ -63,6 +68,61 @@ class BadgesView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _HabitSelectorFilterRow extends StatelessWidget {
+  final List<HabitModel> habits;
+  final String? selectedHabitId;
+  final ValueChanged<String?> onSelect;
+
+  const _HabitSelectorFilterRow({
+    required this.habits,
+    required this.selectedHabitId,
+    required this.onSelect,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Alışkanlık Bazında Rozet İlerlemesi',
+          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 8),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              ChoiceChip(
+                label: const Text('Tüm Alışkanlıklar (Genel)'),
+                selected: selectedHabitId == null,
+                onSelected: (_) => onSelect(null),
+              ),
+              const SizedBox(width: 8),
+              ...habits.map((habit) {
+                final isSelected = habit.id == selectedHabitId;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: ChoiceChip(
+                    avatar: Icon(
+                      habit.icon,
+                      size: 16,
+                      color: isSelected ? Colors.white : habit.color,
+                    ),
+                    label: Text('${habit.title} (${habit.currentStreak}. Gün)'),
+                    selected: isSelected,
+                    onSelected: (_) => onSelect(habit.id),
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -168,6 +228,17 @@ class _BadgeDetailModal extends StatelessWidget {
             badge.title,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
           ),
+          if (badge.habitTitle != null) ...[
+            const SizedBox(height: 4),
+            Text(
+              'Alışkanlık: ${badge.habitTitle}',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
           const SizedBox(height: 8),
           Text(
             badge.description,
@@ -181,12 +252,18 @@ class _BadgeDetailModal extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Ödül: +${badge.rewardCoins} Rozet',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w700, color: AppColors.accentGold)),
+              Text(
+                'Ödül: +${badge.rewardCoins} Rozet',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.accentGold,
+                ),
+              ),
               const SizedBox(width: 16),
-              Text('Durum: ${isUnlocked ? "Kazanıldı ✅" : badge.progressText}',
-                  style: const TextStyle(fontWeight: FontWeight.w700)),
+              Text(
+                'Durum: ${isUnlocked ? "Kazanıldı ✅" : badge.progressText}',
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
             ],
           ),
           const SizedBox(height: 20),

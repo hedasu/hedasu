@@ -42,6 +42,7 @@ class _HabiPetAppState extends State<HabiPetApp> {
     _petController = PetController();
     _habitController = HabitController();
     _badgeController = BadgeController();
+    _badgeController.syncProgressWithHabits(habits: _habitController.habits);
     _marketController = MarketController();
     _cupboardController = CupboardController();
     _calendarController = CalendarController();

@@ -16,6 +16,8 @@ class CalendarDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
@@ -23,14 +25,14 @@ class CalendarDay extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.darkMint.withValues(alpha: 0.18)
+              ? primaryColor.withValues(alpha: 0.18)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? AppColors.darkMint
+                ? primaryColor
                 : (dayModel.isToday
-                    ? AppColors.accentGold
+                    ? primaryColor
                     : Colors.transparent),
             width: isSelected || dayModel.isToday ? 1.5 : 0,
           ),
@@ -57,12 +59,14 @@ class _DayNumberText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
     final textColor = !dayModel.isCurrentMonth
         ? Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.35)
         : (isSelected
-            ? AppColors.darkMint
+            ? primaryColor
             : (dayModel.isToday
-                ? AppColors.accentGold
+                ? primaryColor
                 : Theme.of(context).textTheme.bodyMedium?.color));
 
     return Text(

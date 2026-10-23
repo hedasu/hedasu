@@ -92,18 +92,97 @@ class _HabitInfoColumn extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               _StreakBadge(streak: habit.currentStreak),
+              const SizedBox(width: 4),
+              _DayBadge(day: habit.currentStreak),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 3),
           Text(
             habit.target,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 12,
               color: Theme.of(context).textTheme.bodySmall?.color,
             ),
           ),
+          const SizedBox(height: 6),
+          _HabitMiniProgress(habit: habit),
         ],
       ),
+    );
+  }
+}
+
+class _DayBadge extends StatelessWidget {
+  final int day;
+
+  const _DayBadge({required this.day});
+
+  @override
+  Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: primaryColor.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        '$day. Gün',
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w800,
+          color: primaryColor,
+        ),
+      ),
+    );
+  }
+}
+
+class _HabitMiniProgress extends StatelessWidget {
+  final HabitModel habit;
+
+  const _HabitMiniProgress({required this.habit});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '21 Gün Hedefi',
+              style: TextStyle(
+                fontSize: 10,
+                color: Theme.of(context).textTheme.bodySmall?.color,
+              ),
+            ),
+            Text(
+              habit.scientificGoalText,
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: habit.color,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 3),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(3),
+          child: LinearProgressIndicator(
+            value: habit.scientificGoalProgress,
+            minHeight: 4,
+            backgroundColor:
+                Theme.of(context).colorScheme.surfaceContainerHighest,
+            valueColor: AlwaysStoppedAnimation<Color>(habit.color),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -11,9 +11,52 @@ Bu doküman flutter projesinde geliştirme yapacak olan Ajan (antigravity) yapay
 
 -**Dart SDK:** 3.10.2
 
--**Tasarım Dili:** Tasarım Dili: Material 3, Dinamik Tema Desteği: Koyu tema (gece ormanı konsepti, dark navy & mint yeşili vurgular) ve Aydınlık tema (ferah doğa konsepti, temiz beyaz & pastel mint yeşili tonları). Modern, minimal, sevimli ve yuvarlatılmış kartlardan oluşan bir arayüz. Kullanıcı tek dokunuşla aydınlık ve koyu tema arasında geçiş yapabilir.
+-**Tasarım Dili:** **Sage & Cream** Renk Paleti ve Material 3 Mimarisi. Hem **Açık Tema (Light Mode)** hem de **Koyu Tema (Dark Mode)** desteklenir:
+  - **Light Mode – Sage & Cream:**
+    - Primary (Ana renk): `#557C6B`
+    - Secondary (İkincil renk): `#BBD2C0`
+    - Background (Arka plan): `#FAF8F1`
+    - Surface (Kart arka planı): `#FFFFFF`
+    - Surface Variant (İkincil kart): `#F0F5F2`
+    - Accent (Vurgu/Ödül): `#D6A85B` (Altın sarısı)
+    - Text Primary (Ana yazı): `#273B34`
+    - Text Secondary (İkincil yazı): `#64756D`
+    - Border (Kart kenarlıkları): `#DCE8DF`
+  - **Dark Mode – Sage & Cream:**
+    - Primary (Ana renk): `#6EA286`
+    - Secondary (İkincil renk): `#3A5B4F`
+    - Background (Arka plan): `#0F1412` (Göz yormayan koyu yeşil-antrasit)
+    - Surface (Kart arka planı): `#1A221E`
+    - Surface Variant (İkincil kart): `#232E28`
+    - Accent (Vurgu/Ödül): `#D6A85B` (Altın sarısı)
+    - Text Primary (Ana yazı): `#E8EDE6`
+    - Text Secondary (İkincil yazı): `#A8B5AC`
+    - Border (Kart kenarlıkları): `#34463C`
+  - **Kalıcı Tema Sistemi:** Profil ve Ayarlar sayfalarındaki anahtar (switch) ile anında geçiş yapılır. Tercih `ThemeStorage` ile yerel olarak kalıcı saklanır (Web `localStorage` ve Desktop/Native dosya depolama, sıfır harici bağımlılık kuralına uygun).
+  - **Alışkanlık Renk Kimliği:** Su (`#0EA5E9`), Spor (`#F97316`), Yoga (`#8B5CF6`), Sigara Bırakma (`#34D399`), Kitap (`#EAB308`) renk kimlikleri her iki temada da korunur; kart zeminleri ve metin kontrastları seçili temaya göre otomatik uyarlanır.
 
--**Eklenen Özellikler:** - **Eklenen Özellikler:** **habiPEt Evcil Hayvan Sistemi:** Kullanıcı, sunulan seçenekler arasından bir evcil hayvan seçer ,isimlendirir.hayvanı veya ismi istediği zaman değiştirebilir. Hayvan değiştirildiğinde önceki hayvanın tüm gelişimi yeni hayvana aktarılır. Evcil hayvanın yaşı, kullanıcının uygulamadaki kullanım süresine göre ilerler (uygulamanın 3. ayında 3 aylık bir evcil hayvan). Hayvanın yaşı ve seviyesi gösterilir; seviyesi beslendikçe artar. **Alışkanlık Sistemi:** Su içme, spor, yoga/meditasyon, sigara bırakma ve kitap okuma alışkanlıkları sunulur. Kullanıcı istediği kadar özel alışkanlık ekleyebilir. Her alışkanlığın başlangıç tarihi, gün sayacı ve rozet ilerlemesi ayrı takip edilir. İkinci, üçüncü ve sonraki alışkanlıklar eklendiğinde bunlara özel ekstra rozetler kazanılır. **Rozet ve Ödül Sistemi:** Alışkanlıklar tamamlandıkça günlük, haftalık, aylık ve yıllık rozetler kazanılır. İlk üç gün kazanılan rozet ödülü kademeli olarak artar; üçüncü günden sonra günlük kazanım sabitlenir. İlk aya kadar haftalık ödüller kademeli artar, sonrasında aylık dönemlere göre artış uygulanır. Rozetlerin değer sıralaması **Yıllık > Aylık > Haftalık > Günlük** şeklindedir. Aynı kategorideki rozetler ortak bir görsel tasarıma sahiptir. Alışkanlığa başlama, 1. gün, 3. gün, ilk hafta, 21. gün (bilimsel alışkanlık kazanma temalı özel ödül), ilk ay, 3. ay, 6. ay ve 1. yıl için özel isimlendirilmiş başarı rozetleri bulunur. **Market ve Beslenme Sistemi:** Kullanıcı, alışkanlıklarından kazandığı rozetleri markette harcayarak evcil hayvanı için yiyecek satın alır. Satın alınan yiyecekler dolaba eklenir ve hayvan bu yiyeceklerle beslenir. Ana sayfada evcil hayvanın altında yatay kaydırılabilir bir yiyecek dolabı alanı bulunur. Dolap simgesine basıldığında dolap açılır; dolap içerisindeki aktif **+** butonu kullanıcıyı markete yönlendirir. **Ana Sayfa:** Bildirimler, evcil hayvan ekleme/değiştirme, market ve rozet göstergesi için aktif butonlar bulunur. Evcil hayvanın yaşı, seviyesi ve yiyecek dolabı gösterilir. **Takvim Modülü:** Standart takvim görünümünde kullanıcıların alışkanlıkları, isimleri ve kazanılan rozetleri ilgili tarihlerde gösterilir. Kullanıcı, alışkanlık ekleme aşamasında alışkanlığın adını, takvimde görünecek yazı rengini ve diğer görünüm tercihlerini Apple Takvim benzeri şekilde özelleştirebilir. Birden fazla alışkanlık takvimde ayrı ayrı görüntülenir. **Başarı Rozetleri Modülü:** Kazanılmış rozetler belirgin, henüz kazanılmamış rozetler daha silik görüntülenir. Kilitli rozetlerin altında hedef ilerlemesi gösterilir (örneğin 21. gün rozetine ilerleyen kullanıcı için **16/21**). Günlük, haftalık, aylık, yıllık ve özel başarı rozetleri kategorilerine göre görüntülenir. **Karşılama Diyaloğu:** Kullanıcı uygulamayı her açtığında güncel ilerlemesini belirten motivasyon mesajı gösterilir (örneğin "Hoş geldiniz! Bugün 16. gününüz, harika ilerliyorsunuz!"). Özel rozet kazanılan günlerde karşılama mesajında bu başarı ayrıca belirtilir. **Profil ve Hesap Yönetimi:** Profil sayfası, ayarlar, yardım ve destek, hesabı kapatma seçenekleri ve kullanıcı giriş arayüzü bulunur. Mevcut **Material 3 tasarım dili ve reaktif aydınlık/karanlık tema desteği** korunur.
+-**Eklenen Özellikler:** 
+  - **habiPEt Evcil Hayvan Sistemi:** Kullanıcı, sunulan seçenekler arasından bir evcil hayvan seçer, isimlendirir; hayvanı veya ismi istediği zaman değiştirebilir. Hayvan değiştirildiğinde önceki hayvanın tüm gelişimi yeni hayvana aktarılır. Evcil hayvanın yaşı, kullanıcının uygulamadaki kullanım süresine göre ilerler (uygulamanın 3. ayında 3 aylık bir evcil hayvan). Hayvanın yaşı ve seviyesi gösterilir; seviyesi beslendikçe artar.
+  - **Alışkanlık Sistemi ve Ayrık Gün Takibi:** Su içme, spor, yoga/meditasyon, sigara bırakma ve kitap okuma alışkanlıkları sunulur. Kullanıcı istediği kadar özel alışkanlık ekleyebilir. **Her bir alışkanlığın başlangıç tarihi, gün sayacı (16. Gün, 14. Gün, 12. Gün vb.), kesintisiz serisi ve 21 günlük bilimsel alışkanlık hedefi (X/21 Gün) birbirinden tamamen bağımsız olarak ayrı ayrı takip edilir.** Alışkanlık kartlarında ve ana sayfada her alışkanlığın kendi gün göstergesi bağımsız yer alır.
+  - **Çoklu Alışkanlık ve Rozet Ödül Sistemi:** 1'den fazla alışkanlığa sahip olmak ve bunları sürdürmek kullanıcıya doğrudan ekstra rozetler ve jeton kazandırır.
+    - *2. Alışkanlık:* **Çifte Güç** (+25 Rozet)
+    - *3. Alışkanlık:* **Denge Ustası** (+40 Rozet)
+    - *4. Alışkanlık:* **Dört Dörtlük** (+60 Rozet)
+    - *5. Alışkanlık:* **Süper İrade** (+80 Rozet)
+    - *6. Alışkanlık:* **Altın Ritim** (+100 Rozet)
+    - *7. Alışkanlık:* **Yedili Dönüşüm** (+125 Rozet)
+    - *8. Alışkanlık:* **Sekizinci Boyut** (+150 Rozet)
+    - *9. Alışkanlık:* **Zirve Ustası** (+175 Rozet)
+    - *10. Alışkanlık:* **Alışkanlık Efendisi (10 Numara)** (+200 Rozet)
+    - *Çoklu Disiplin:* Aynı gün içerisinde 2 veya daha fazla alışkanlığı tamamlama (+35 Rozet)
+    - *Günün Şampiyonu:* Tüm aktif alışkanlıkları aynı gün eksiksiz tamamlama (+50 Rozet)
+    - Alışkanlıklar tamamlandıkça günlük, haftalık, aylık ve yıllık rozetler kazanılır. İlk üç gün kazanılan rozet ödülü kademeli olarak artar (5, 10, 15); üçüncü günden sonra günlük kazanım sabitlenir. İlk aya kadar haftalık ödüller kademeli artar, sonrasında aylık dönemlere göre artış uygulanır. Rozetlerin değer sıralaması **Yıllık > Aylık > Haftalık > Günlük > Çoklu Alışkanlık > Özel** şeklindedir.
+    - **Başarı Rozetleri Modülünde Ayrık Alışkanlık Filtreleme:** Rozetler sayfasında kullanıcı "Tüm Alışkanlıklar" genel görünümünün yanında tek dokunuşla dilediği alışkanlığı (ör. *Su İçme - 16. Gün*, *Yoga - 12. Gün*) seçebilir; 21. Gün Bilimsel Hedef kartı ve kilit durumları o alışkanlığın kendi gün sayısına göre ayrık olarak dinamik güncellenir.
+  - **Market ve Beslenme Sistemi:** Kullanıcı, alışkanlıklarından ve çoklu alışkanlık başarılarından kazandığı rozetleri markette harcayarak evcil hayvanı için yiyecek satın alır. Satın alınan yiyecekler dolaba eklenir ve hayvan bu yiyeceklerle beslenir. Ana sayfada evcil hayvanın altında yatay kaydırılabilir bir yiyecek dolabı alanı bulunur. Dolap simgesine basıldığında dolap açılır; dolap içerisindeki aktif **+** butonu kullanıcıyı markete yönlendirir.
+  - **Ana Sayfa:** Bildirimler, evcil hayvan ekleme/değiştirme, market ve rozet göstergesi için aktif butonlar bulunur. Evcil hayvanın yaşı, seviyesi ve yiyecek dolabı gösterilir. Günlük görev listesinde her alışkanlığın gün sayısı rozet olarak belirtilir.
+  - **Takvim Modülü:** Standart takvim görünümünde kullanıcıların alışkanlıkları, isimleri, gün sayıları ve kazanılan rozetleri ilgili tarihlerde gösterilir. Kullanıcı, alışkanlık ekleme aşamasında alışkanlığın adını, takvimde görünecek yazı rengini ve diğer görünüm tercihlerini Apple Takvim benzeri şekilde özelleştirebilir. Birden fazla alışkanlık takvimde ayrı ayrı görüntülenir.
+  - **Karşılama Diyaloğu:** Kullanıcı uygulamayı her açtığında güncel ilerlemesini belirten motivasyon mesajı gösterilir (örneğin "Hoş geldiniz! Bugün 16. gününüz, harika ilerliyorsunuz!"). Özel rozet kazanılan günlerde karşılama mesajında bu başarı ayrıca belirtilir.
+  - **Profil ve Hesap Yönetimi:** Profil sayfası, ayarlar, yardım ve destek, hesabı kapatma seçenekleri ve kullanıcı giriş arayüzü bulunur. Mevcut **Material 3 tasarım dili ve reaktif aydınlık/karanlık tema desteği** korunur.
 
 ## Mimari Yapı : Özellik Bazlı
 
@@ -29,7 +72,8 @@ lib/
 │   │
 │   ├── theme/
 │   │   ├── app_theme.dart
-│   │   └── theme_controller.dart
+│   │   ├── theme_controller.dart
+│   │   └── theme_storage.dart
 │   │
 │   ├── router/
 │   │   └── app_router.dart

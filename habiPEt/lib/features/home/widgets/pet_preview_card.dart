@@ -224,7 +224,7 @@ class _FoodQuickFeedItem extends StatelessWidget {
           color: Theme.of(context).colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: AppColors.accentOrange.withValues(alpha: 0.3),
+            color: Theme.of(context).colorScheme.outline,
           ),
         ),
         child: Column(
@@ -237,7 +237,7 @@ class _FoodQuickFeedItem extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w800,
-                color: AppColors.accentOrange,
+                color: AppColors.accentGold,
               ),
             ),
           ],
@@ -254,30 +254,32 @@ class _AddFoodMarketButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 64,
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: AppColors.darkMint.withValues(alpha: 0.15),
+          color: primaryColor.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: AppColors.darkMint,
+            color: primaryColor,
             width: 1.5,
           ),
         ),
-        child: const Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add_rounded, color: AppColors.darkMint, size: 24),
-            SizedBox(height: 2),
+            Icon(Icons.add_rounded, color: primaryColor, size: 24),
+            const SizedBox(height: 2),
             Text(
               'Market',
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
-                color: AppColors.darkMint,
+                color: primaryColor,
               ),
             ),
           ],

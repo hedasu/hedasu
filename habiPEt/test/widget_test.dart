@@ -70,6 +70,20 @@ void main() {
       expect(badge21.progressText, equals('16/21'));
       expect(badge21.isUnlocked, isFalse);
     });
+
+    test('BadgeController tracks multi-habit badges from 2 to 10', () {
+      final controller = BadgeController();
+      for (int i = 2; i <= 10; i++) {
+        final badge = controller.allBadges.firstWhere((b) => b.id == 'multi_habit_$i');
+        expect(badge.targetDays, equals(i));
+        if (i <= 5) {
+          expect(badge.isUnlocked, isTrue);
+        } else {
+          expect(badge.isUnlocked, isFalse);
+          expect(badge.progressText, equals('5/$i'));
+        }
+      }
+    });
   });
 
   group('Cupboard & Feeding Test', () {

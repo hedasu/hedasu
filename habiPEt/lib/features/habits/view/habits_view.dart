@@ -44,8 +44,7 @@ class HabitsView extends StatelessWidget {
                   onToggle: (habitId) {
                     habitCtrl.toggleHabitCompletion(habitId, DateTime.now());
                     badgeCtrl.syncProgressWithHabits(
-                      maxStreak: habitCtrl.maxStreak,
-                      habitCount: habitCtrl.habitCount,
+                      habits: habitCtrl.habits,
                     );
                   },
                 ),

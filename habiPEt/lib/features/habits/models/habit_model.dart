@@ -38,6 +38,20 @@ class HabitModel {
 
   int get totalCompletedCount => completedDates.length;
 
+  int get daysSinceStart {
+    final now = DateTime.now();
+    final diff = DateTime(now.year, now.month, now.day)
+        .difference(DateTime(startDate.year, startDate.month, startDate.day))
+        .inDays;
+    return diff < 0 ? 1 : diff + 1;
+  }
+
+  String get dayCounterText => '$currentStreak. Gün';
+
+  double get scientificGoalProgress => (currentStreak / 21).clamp(0.0, 1.0);
+
+  String get scientificGoalText => '$currentStreak/21 Gün';
+
   HabitModel copyWith({
     String? id,
     String? title,
