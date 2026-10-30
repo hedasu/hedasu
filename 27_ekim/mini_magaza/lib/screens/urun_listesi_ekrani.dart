@@ -143,7 +143,7 @@ class _UrunListesiEkraniState extends State<UrunListesiEkrani> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: ChoiceChip(
-                    avatar: Text(kategori.ikon),
+                    avatar: Text(kategori.icon),
                     label: Text(kategori.baslik),
                     selected: seciliMi,
                     onSelected: (secildi) {
