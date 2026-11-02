@@ -1,0 +1,248 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "19_ekim_ders",
+            "cwd": "19_ekim_ders",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "19_ekim_ders (profile mode)",
+            "cwd": "19_ekim_ders",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "19_ekim_ders (release mode)",
+            "cwd": "19_ekim_ders",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "19_ekim_ders_2",
+            "cwd": "19_ekim_ders_2",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "19_ekim_ders_2 (profile mode)",
+            "cwd": "19_ekim_ders_2",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "19_ekim_ders_2 (release mode)",
+            "cwd": "19_ekim_ders_2",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "19_ekim_ders_3",
+            "cwd": "19_ekim_ders_3",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "19_ekim_ders_3 (profile mode)",
+            "cwd": "19_ekim_ders_3",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "19_ekim_ders_3 (release mode)",
+            "cwd": "19_ekim_ders_3",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "StartPath",
+            "cwd": "StartPath",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "StartPath (profile mode)",
+            "cwd": "StartPath",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "StartPath (release mode)",
+            "cwd": "StartPath",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "akilli_valiz_asistani",
+            "cwd": "akilli_valiz_asistani",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "akilli_valiz_asistani (profile mode)",
+            "cwd": "akilli_valiz_asistani",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "akilli_valiz_asistani (release mode)",
+            "cwd": "akilli_valiz_asistani",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "dunce_gunluk",
+            "cwd": "dunce_gunluk",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "dunce_gunluk (profile mode)",
+            "cwd": "dunce_gunluk",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "dunce_gunluk (release mode)",
+            "cwd": "dunce_gunluk",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "habiPEt",
+            "cwd": "habiPEt",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "habiPEt (profile mode)",
+            "cwd": "habiPEt",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "habiPEt (release mode)",
+            "cwd": "habiPEt",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "mini_magaza_canli_api",
+            "cwd": "mini_magaza_canli_api",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "mini_magaza_canli_api (profile mode)",
+            "cwd": "mini_magaza_canli_api",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "mini_magaza_canli_api (release mode)",
+            "cwd": "mini_magaza_canli_api",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "otoVia_app",
+            "cwd": "otoVia_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "otoVia_app (profile mode)",
+            "cwd": "otoVia_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "otoVia_app (release mode)",
+            "cwd": "otoVia_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "mini_magaza",
+            "cwd": "27_ekim/mini_magaza",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "mini_magaza (profile mode)",
+            "cwd": "27_ekim/mini_magaza",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "mini_magaza (release mode)",
+            "cwd": "27_ekim/mini_magaza",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "test",
+            "cwd": "15_ekim_ders/test/test",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "test (profile mode)",
+            "cwd": "15_ekim_ders/test/test",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "test (release mode)",
+            "cwd": "15_ekim_ders/test/test",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "test_2",
+            "cwd": "15_ekim_ders/test_2/test_2",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "test_2 (profile mode)",
+            "cwd": "15_ekim_ders/test_2/test_2",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "test_2 (release mode)",
+            "cwd": "15_ekim_ders/test_2/test_2",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
