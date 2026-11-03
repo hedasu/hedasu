@@ -1,9 +1,13 @@
-import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
+// -bu kod bloğunda kullanıcının tek dokunuşla hazır antrenman şablonlarını (Ağırlık, Kardio, HIIT, Yoga) ekleyebilmesini sağlayan WorkoutQuickPresets widget'ı anlatılıyor.-
+// Wrap Widget'ı: Çocuklarını yan yana dizen, ancak satırda yer kalmadığında taşma hatası (Right Overflowed) vermek yerine sığmayan elemanları otomatik olarak bir alt satıra indiren esnek düzen widget'ı.
+// İsimlendirilmiş Fonksiyon Parametreleri (void Function({required String title, ...})): Callback fonksiyonunun çağrılırken hangi değerin ne anlama geldiğini açıkça belirterek (title: '...', durationMinutes: 45) hata yapma riskini azaltan yapı.
+
+import 'package:flutter/material.dart'; // Flutter UI kütüphanesi.
+import '../../../../core/constants/app_colors.dart'; // Renk sabitleri.
 
 /// Hızlı Antrenman Ekleme Seçenekleri (Temaya Duyarlı)
 class WorkoutQuickPresets extends StatelessWidget {
-  final void Function({
+  final void Function({ // Bir şablona tıklandığında 4 temel antrenman bilgisini üst katmana ileten fonksiyon tipi.
     required String title,
     required int durationMinutes,
     required int caloriesBurned,
@@ -21,7 +25,7 @@ class WorkoutQuickPresets extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Hızlı Egzersiz Ekle',
+          'Hızlı Egzersiz Ekle', // Bölüm başlığı.
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -29,11 +33,11 @@ class WorkoutQuickPresets extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
+        Wrap( // Butonları yan yana dizer, ekrana sığmayanları otomatik olarak alt satıra geçirir.
+          spacing: 8, // Yan yana duran çipler arasındaki yatay boşluk (8 piksel).
+          runSpacing: 8, // Alt satıra geçen çipler ile üst satır arasındaki dikey boşluk (8 piksel).
           children: [
-            _PresetChip(
+            _PresetChip( // 1. Şablon: Ağırlık Antrenmanı (45 dk, 320 kcal).
               title: 'Ağırlık',
               subtitle: '45 dk • 320 kcal',
               icon: Icons.fitness_center_rounded,
@@ -44,7 +48,7 @@ class WorkoutQuickPresets extends StatelessWidget {
                 category: 'strength',
               ),
             ),
-            _PresetChip(
+            _PresetChip( // 2. Şablon: Kardio Koşu (30 dk, 280 kcal).
               title: 'Kardio Koşu',
               subtitle: '30 dk • 280 kcal',
               icon: Icons.directions_run_rounded,
@@ -55,7 +59,7 @@ class WorkoutQuickPresets extends StatelessWidget {
                 category: 'cardio',
               ),
             ),
-            _PresetChip(
+            _PresetChip( // 3. Şablon: HIIT Seansı (20 dk, 220 kcal).
               title: 'HIIT Seansı',
               subtitle: '20 dk • 220 kcal',
               icon: Icons.flash_on_rounded,
@@ -66,7 +70,7 @@ class WorkoutQuickPresets extends StatelessWidget {
                 category: 'hiit',
               ),
             ),
-            _PresetChip(
+            _PresetChip( // 4. Şablon: Yoga & Esneme (25 dk, 90 kcal).
               title: 'Yoga & Esneme',
               subtitle: '25 dk • 90 kcal',
               icon: Icons.self_improvement_rounded,
@@ -84,7 +88,7 @@ class WorkoutQuickPresets extends StatelessWidget {
   }
 }
 
-class _PresetChip extends StatelessWidget {
+class _PresetChip extends StatelessWidget { // Tek bir hızlı egzersiz kutucuğunun (chip) tasarımını tutan özel widget.
   final String title;
   final String subtitle;
   final IconData icon;
@@ -99,9 +103,9 @@ class _PresetChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final green = AppColors.greenOf(context);
+    final green = AppColors.greenOf(context); // Egzersiz teması için neon yeşil renk.
 
-    return InkWell(
+    return InkWell( // Tıklama ve dalga efekti.
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
@@ -112,7 +116,7 @@ class _PresetChip extends StatelessWidget {
           border: Border.all(color: AppColors.surfaceBorderOf(context)),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min, // ÖNEMLİ: Wrap içinde kullanıldığı için tüm satırı kaplamak yerine sadece içindeki yazı ve ikon kadar genişlik alır.
           children: [
             Icon(icon, color: green, size: 20),
             const SizedBox(width: 8),
@@ -120,7 +124,7 @@ class _PresetChip extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  title, // Örn: 'Ağırlık'.
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -128,7 +132,7 @@ class _PresetChip extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  subtitle,
+                  subtitle, // Örn: '45 dk • 320 kcal'.
                   style: TextStyle(
                     fontSize: 10,
                     color: AppColors.textSecondaryOf(context),
@@ -142,3 +146,11 @@ class _PresetChip extends StatelessWidget {
     );
   }
 }
+
+// ÇALIŞMA MANTIĞI:
+// Wrap widget'ı 4 adet _PresetChip'i ekran genişliğine göre yan yana ve alt alta yerleştirir
+// -> Kullanıcı bir çipe dokunduğunda onTap tetiklenir -> onAddPreset ile egzersiz bilgileri WorkoutView'a ve oradan WorkoutController'a iletilir.
+
+// ROW : Tüm elemanları tek bir satıra sıkıştırmaya çalışır; ekran daralırsa sağdan taşma hatası (Overflow) verir
+//  VS
+// WRAP : Elemanları satıra dizer, satır dolduğunda sığmayanları otomatik olarak alt satıra kaydırır (etiket ve çip listeleri için en güvenli yapıdır)

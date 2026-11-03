@@ -1,58 +1,61 @@
-import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../models/workout_entry_model.dart';
+// -bu kod bloğunda yapılan tek bir antrenmanın kategori ikonunu, başlığını, süresini ve yakılan kalorisini şık bir satır kartı halinde gösteren WorkoutCard widget'ı anlatılıyor.-
+// Modüler Alt Widget Parçalama (_WorkoutIconBox, _WorkoutInfo, _WorkoutCalories): Tek bir büyük build() metodu yazmak yerine kartın sol, orta ve sağ bölümlerini ayrı küçük StatelessWidget'lara bölerek okunabilirliği ve performansı artırma tekniği.
+
+import 'package:flutter/material.dart'; // Flutter UI bileşenleri.
+import '../../../../core/constants/app_colors.dart'; // Renk sabitleri.
+import '../models/workout_entry_model.dart'; // Antrenman veri modeli.
 
 /// Tekil Antrenman Kartı (Temaya Duyarlı)
 class WorkoutCard extends StatelessWidget {
-  final WorkoutEntryModel workout;
+  final WorkoutEntryModel workout; // Gösterilecek antrenman verisi.
 
   const WorkoutCard({
     super.key,
     required this.workout,
   });
 
-  IconData _getCategoryIcon(String category) {
+  IconData _getCategoryIcon(String category) { // Antrenman kategorisine göre uygun ikonu döndüren yardımcı metot.
     switch (category) {
       case 'cardio':
-        return Icons.directions_run_rounded;
+        return Icons.directions_run_rounded; // Koşan insan ikonu.
       case 'hiit':
-        return Icons.flash_on_rounded;
+        return Icons.flash_on_rounded; // Şimşek (yüksek yoğunluk) ikonu.
       case 'yoga':
-        return Icons.self_improvement_rounded;
+        return Icons.self_improvement_rounded; // Meditasyon/Esneklik ikonu.
       case 'strength':
       default:
-        return Icons.fitness_center_rounded;
+        return Icons.fitness_center_rounded; // Ağırlık/Dambıl ikonu.
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(14),
+      margin: const EdgeInsets.only(bottom: 10), // Altındaki diğer antrenman kartıyla arasına 10 piksel dış boşluk (margin) bırakır.
+      padding: const EdgeInsets.all(14), // Kartın iç boşluğu (padding).
       decoration: BoxDecoration(
         color: AppColors.surfaceOf(context),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.surfaceBorderOf(context)),
       ),
-      child: Row(
+      child: Row( // Sol ikon kutusu, orta bilgi yazıları ve sağ kalori etiketini yan yana dizer.
         children: [
-          _WorkoutIconBox(icon: _getCategoryIcon(workout.category)),
+          _WorkoutIconBox(icon: _getCategoryIcon(workout.category)), // Sol: Yeşil ikon kutusu.
           const SizedBox(width: 14),
-          Expanded(
+          Expanded( // Orta: Başlık ve dakika bilgisi (kalan tüm yatay alanı kaplar, kalori kutusunu en sağa iter).
             child: _WorkoutInfo(
               title: workout.title,
               durationMinutes: workout.durationMinutes,
             ),
           ),
-          _WorkoutCalories(calories: workout.caloriesBurned),
+          _WorkoutCalories(calories: workout.caloriesBurned), // Sağ: Turuncu ateş ikonlu kalori rozeti.
         ],
       ),
     );
   }
 }
 
-class _WorkoutIconBox extends StatelessWidget {
+class _WorkoutIconBox extends StatelessWidget { // Kartın solundaki 44x44 piksellik yeşil parlamalı ikon kutusu.
   final IconData icon;
 
   const _WorkoutIconBox({required this.icon});
@@ -66,7 +69,7 @@ class _WorkoutIconBox extends StatelessWidget {
       width: 44,
       height: 44,
       decoration: BoxDecoration(
-        color: isDark ? AppColors.neonGreenGlow : const Color(0x2000E676),
+        color: isDark ? AppColors.neonGreenGlow : const Color(0x2000E676), // Yeşil yarı saydam arka plan.
         borderRadius: BorderRadius.circular(12),
       ),
       child: Icon(icon, color: green, size: 24),
@@ -74,7 +77,7 @@ class _WorkoutIconBox extends StatelessWidget {
   }
 }
 
-class _WorkoutInfo extends StatelessWidget {
+class _WorkoutInfo extends StatelessWidget { // Kartın ortasındaki antrenman adı ve süresi.
   final String title;
   final int durationMinutes;
 
@@ -86,10 +89,10 @@ class _WorkoutInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start, // Yazıları sola hizalar.
       children: [
         Text(
-          title,
+          title, // Örn: 'Ağırlık Antrenmanı'.
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
@@ -98,7 +101,7 @@ class _WorkoutInfo extends StatelessWidget {
         ),
         const SizedBox(height: 2),
         Text(
-          '$durationMinutes dakika',
+          '$durationMinutes dakika', // Örn: '45 dakika'.
           style: TextStyle(
             fontSize: 12,
             color: AppColors.textSecondaryOf(context),
@@ -109,7 +112,7 @@ class _WorkoutInfo extends StatelessWidget {
   }
 }
 
-class _WorkoutCalories extends StatelessWidget {
+class _WorkoutCalories extends StatelessWidget { // Kartın sağındaki yakılan kaloriyi gösteren turuncu kutucuk.
   final int calories;
 
   const _WorkoutCalories({required this.calories});
@@ -125,11 +128,11 @@ class _WorkoutCalories extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.local_fire_department_rounded,
+          const Icon(Icons.local_fire_department_rounded, // Ateş ikonu.
               color: AppColors.neonOrange, size: 16),
           const SizedBox(width: 4),
           Text(
-            '$calories kcal',
+            '$calories kcal', // Örn: '320 kcal'.
             style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.bold,
@@ -141,3 +144,11 @@ class _WorkoutCalories extends StatelessWidget {
     );
   }
 }
+
+// ÇALIŞMA MANTIĞI:
+// WorkoutCard bir WorkoutEntryModel alır -> _getCategoryIcon() ile kategorisine uygun ikonu seçer
+// -> Row içinde _WorkoutIconBox, _WorkoutInfo ve _WorkoutCalories alt widget'larını yan yana yerleştirerek kartı oluşturur.
+
+// PADDING (İÇ BOŞLUK) : Kutunun kenarlığı (border) ile içindeki elemanlar (yazı/ikon) arasındaki boşluktur
+//  VS
+// MARGIN (DIŞ BOŞLUK) : Kutunun kenarlığı (border) ile dışındaki diğer komşu kutular arasındaki boşluktur
