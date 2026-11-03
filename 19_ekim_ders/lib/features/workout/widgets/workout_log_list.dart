@@ -1,37 +1,41 @@
-import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../models/workout.dart';
+// -bu dosyada gün içinde tamamlanan egzersizleri saat, süre ve kalori bilgileriyle listeleyen veya liste boşsa bilgilendirme kutusu gösteren WorkoutLogList bileşeni anlatılıyor.-
+// ListView.separated : Dinamik listeleri oluştururken her iki eleman arasına `separatorBuilder` ile otomatik boşluk/çizgi ekleyen liste bileşenidir.
+// NeverScrollableScrollPhysics : Bir `ScrollView` içindeki alt `ListView`'ın kendi başına kaymasını engelleyerek tüm ekranın tek bir bütün olarak kaymasını sağlayan fizik kuralıdır.
+
+import 'package:flutter/material.dart'; // Flutter Material bileşenleri.
+import '../../../core/constants/app_colors.dart'; // Uygulama renk sabitleri.
+import '../models/workout.dart'; // Egzersiz veri modeli (Workout).
 
 /// Kaydedilen egzersizleri listeleyen widget.
-class WorkoutLogList extends StatelessWidget {
+class WorkoutLogList extends StatelessWidget { // StatelessWidget : Dışarıdan gelen `workouts` listesini ekrana çizen ve silme isteğini `onDeleteWorkout` ile ileten bileşen.
   const WorkoutLogList({
     super.key,
-    required this.workouts,
-    required this.onDeleteWorkout,
+    required this.workouts, // Gösterilecek egzersiz kayıtları listesi.
+    required this.onDeleteWorkout, // Bir egzersizin yanındaki silme (X) butonuna basıldığında çalışan callback.
   });
 
-  final List<Workout> workouts;
-  final void Function(String id) onDeleteWorkout;
+  final List<Workout> workouts; // final : Antrenman listesi.
+  final void Function(String id) onDeleteWorkout; // final : Silinecek antrenmanın ID'sini alan fonksiyon.
 
   @override
   Widget build(BuildContext context) {
-    if (workouts.isEmpty) {
-      return _buildEmptyState();
+    if (workouts.isEmpty) { // Eğer henüz hiç egzersiz eklenmemişse:
+      return _buildEmptyState(); // Boş durum (Empty State) tasarımını göster.
     }
 
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: workouts.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 8),
+    return ListView.separated( // En az 1 egzersiz varsa listeyi çiz:
+      shrinkWrap: true, // Sadece içindeki elemanların toplam yüksekliği kadar yer kapla.
+      physics: const NeverScrollableScrollPhysics(), // Kendi kaydırmasını kapat, ana sayfa kaydırmasına uy.
+      itemCount: workouts.length, // Listedeki antrenman sayısı.
+      separatorBuilder: (context, index) => const SizedBox(height: 8), // Her iki antrenman kartı arasına 8 piksel dikey boşluk bırak.
       itemBuilder: (context, index) {
-        final workout = workouts[index];
-        return _buildWorkoutItem(workout);
+        final workout = workouts[index]; // Sıradaki Workout nesnesini al.
+        return _buildWorkoutItem(workout); // Satır kartını oluşturup döndür.
       },
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState() { // _buildEmptyState : Antrenman listesi boşken gösterilen şık bilgilendirme alanı.
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 24),
       alignment: Alignment.center,
@@ -42,7 +46,7 @@ class WorkoutLogList extends StatelessWidget {
       ),
       child: const Column(
         children: [
-          Icon(Icons.fitness_center_rounded, color: AppColors.textMuted, size: 28),
+          Icon(Icons.fitness_center_rounded, color: AppColors.textMuted, size: 28), // Dambıl ikonu.
           SizedBox(height: 8),
           Text(
             'Henüz egzersiz kaydı bulunmuyor.',
@@ -53,7 +57,7 @@ class WorkoutLogList extends StatelessWidget {
     );
   }
 
-  Widget _buildWorkoutItem(Workout workout) {
+  Widget _buildWorkoutItem(Workout workout) { // _buildWorkoutItem : Tek bir egzersiz kaydını gösteren satır kartı.
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -61,27 +65,27 @@ class WorkoutLogList extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.cardBorder),
       ),
-      child: Row(
+      child: Row( // Soldan sağa : Ateş İkonu -> Başlık ve Süre/Kalori Detayı -> Saat -> Silme (X) Butonu.
         children: [
-          Container(
+          Container( // Sol baştaki yuvarlak turuncu ateş ikonu kutusu.
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: AppColors.neonOrange.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              Icons.local_fire_department_rounded,
+              Icons.local_fire_department_rounded, // Ateş / Kalori ikonu.
               color: AppColors.neonOrange,
               size: 16,
             ),
           ),
           const SizedBox(width: 12),
-          Expanded(
+          Expanded( // Orta alan : Egzersiz adı ve altında dakika • kalori özeti.
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  workout.title,
+                  workout.title, // Örn: 'Koşu', 'Ağırlık'.
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
@@ -89,7 +93,7 @@ class WorkoutLogList extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${workout.durationMinutes} dakika • ${workout.caloriesBurned} kcal',
+                  '${workout.durationMinutes} dakika • ${workout.caloriesBurned} kcal', // Örn: '25 dakika • 220 kcal'.
                   style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
@@ -99,16 +103,16 @@ class WorkoutLogList extends StatelessWidget {
             ),
           ),
           Text(
-            workout.formattedTime,
+            workout.formattedTime, // Egzersizin eklendiği saat (Örn: '18:45').
             style: const TextStyle(
               fontSize: 12,
               color: AppColors.textMuted,
               fontWeight: FontWeight.w500,
             ),
           ),
-          IconButton(
+          IconButton( // Sağdaki silme (X) butonu.
             icon: const Icon(Icons.close_rounded, size: 16, color: AppColors.textMuted),
-            onPressed: () => onDeleteWorkout(workout.id),
+            onPressed: () => onDeleteWorkout(workout.id), // Tıklandığında bu kaydın `id` değerini silinmek üzere üst katmana bildirir.
             splashRadius: 18,
           ),
         ],
@@ -116,3 +120,9 @@ class WorkoutLogList extends StatelessWidget {
     );
   }
 }
+
+// ÇALIŞMA MANTIĞI: WorkoutView'dan workouts listesi gelir -> Boşsa _buildEmptyState() gösterilir -> Doluysa her Workout nesnesi için _buildWorkoutItem() çizilir -> Kullanıcı 'X' butonuna basarsa onDeleteWorkout(workout.id) ile kayıt silinir ve toplam kalori/süre düşer.
+
+// LISTVIEW.SEPARATED : Elemanların arasına ayırıcı/boşluk koymak için ayrı bir parametre (`separatorBuilder`) sunar; son elemanın altına gereksiz boşluk eklemez.
+//  VS
+// LISTVIEW.BUILDER : Sadece elemanları çizer; aralarına boşluk koymak için her kartın dışına `Padding` veya `margin` vermek gerekir.
